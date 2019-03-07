@@ -1,0 +1,31 @@
+     /* ====================================================================== */
+     /* >>PRE-COMPILER<<                                                       */
+     /*   >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB);                             */
+     /*   >>IMPORTANT<<                                                        */
+     /*     >>PARM<< MODULE(&LI/LSTSPLFR1 +                                    */
+     /*                     &LI/USLUTILS);                                     */
+     /*     >>PARM<< EXPORT(*SRCFILE);                                         */
+     /*     >>PARM<<   SRCFILE(&SL/&SF);                                       */
+     /*     >>PARM<<   SRCMBR(&SM);                                            */
+     /*     >>PARM<< ACTGRP(*CALLER);                                          */
+     /*     >>PARM<< ALWUPD(*YES);                                             */
+     /*     >>PARM<< ALWLIBUPD(*YES);                                          */
+     /*     >>PARM<< TEXT('Tools/400: List Spooled Files');                    */
+     /*     >>PARM<< TGTRLS(V7R1M0);                                           */
+     /*     >>PARM<< DETAIL(*BASIC);                                           */
+     /*   >>END-IMPORTANT<<                                                    */
+     /*   >>EXECUTE<<                                                          */
+     /* >>END-PRE-COMPILER<<                                                   */
+     /* ====================================================================== */
+
+STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('Tools400_LstSplF')
+
+  EXPORT('LSTSPLF_f_cloSplFLst')
+  EXPORT('LSTSPLF_f_getFirstSplF')
+  EXPORT('LSTSPLF_f_getNextSplF')
+  EXPORT('LSTSPLF_f_getNumSplFAvl')
+  EXPORT('LSTSPLF_f_opnSplFLst')
+  EXPORT('LSTSPLF_f_rtvSplFA')
+
+ENDPGMEXP
+

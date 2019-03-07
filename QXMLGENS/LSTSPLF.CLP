@@ -1,5 +1,5 @@
 /* --------------------------------------------------------------- */
-/* LSTSPLF    - SCRIPT MEMBER                                      */ /* RADD */
+/* LSTSPLF    - SCRIPT MEMBER                                      */
 /* Use commands  xmlgenINC (generate text for install pgm)         */
 /*               xmlgenMBR (to define source members               */
 /*               xmlgenCMD (execute qcmdexc at run time            */
@@ -7,143 +7,106 @@
    DCL &TOLIB *CHAR 10
 /* --------------------------------------------------------------- */
              XMLGENINC  XINCLUDE(*YES)
-                                                                      /* RADD */
+
+             XMLGENVRS XSRCFILE(QLSTSPLF) XSRCLIB(TOOLS400) XSRCMBR(COPYRIGHT)
+
              XMLGENCND  XMSG('Create sample programs? (YES, NO)') +
-                          XVALUES(YES NO)                             /* RADD */
-                                                                      /* RADD */
-/* ---------------------------------- */                              /* RADD */
-/*  Delete old objects                */                              /* RADD */
-/* ---------------------------------- */                              /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/GENDTASTRC))     /* RADD */
-             XMLGENCMD  XCMD(DLTMOD    MODULE(&TOLIB/LSTSPLF   ))     /* RADD */
-             XMLGENCMD  XCMD(DLTSRVPGM SRVPGM(&TOLIB/LSTSPLF   ))     /* RADD */
-             XMLGENCMD  XCMD(DLTMOD    MODULE(&TOLIB/LSTSPLF_T ))     /* RADD */
-             XMLGENCMD  XCMD(DLTPGM       PGM(&TOLIB/LSTSPLF_T ))     /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/XDERRCODE ))     /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/XDMSG     ))     /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/XDQOBJ    ))     /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/XDSPLA0100))     /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/XDSPLF0100))     /* RADD */
+                          XVALUES(YES NO) XVAR(&CRTTSTPGM)
 
-/* ---------------------------------- */                              /* RADD */
-/*  Deploy source member              */                              /* RADD */
-/* ---------------------------------- */                              /* RADD */
-             XMLGENMBR  XMBR(GENDTASTRC) XMBRATR(PF   ) +
-                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(RADDATZ) +
+             XMLGENSET  XVAR(&SRCFILE) XVALUE(QLSTSPLF)
+
+/* ---------------------------------- */
+/*  Deploy source member              */
+/* ---------------------------------- */
+             XMLGENMBR  XMBR(A_INSTALL ) XMBRATR(CLLE  ) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTJOB   ) XOBJTYPE(*FILE  ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(A_README  ) XMBRATR(TXT) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTJOB   ) XOBJTYPE(*PGM) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(COPYRIGHT ) XMBRATR(RPGLE) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
                           XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
-                          XGENCRT(*NO ) XPARAM(*BLANK)                /* RADD */
-                                                                      /* RADD */
-             XMLGENMBR  XMBR(PLSTSPLF  ) XMBRATR(RPGLE) +
-                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(RADDATZ) +
-                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*PGM   ) +
-                          XGENCRT(*NO ) XPARAM(*BLANK)                /* RADD */
-                                                                      /* RADD */
-             XMLGENMBR  XMBR(LSTSPLF   ) XMBRATR(RPGLE) +
-                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(RADDATZ) +
-                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*PGM   ) +
-                          XGENCRT(*NO ) XPARAM(*BLANK)                /* RADD */
-                                                                      /* RADD */
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(FDBOOLEAN ) XMBRATR(RPGLE) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(FDERRCODE ) XMBRATR(RPGLE) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(FDMSG     ) XMBRATR(RPGLE) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(FDQOBJ    ) XMBRATR(RPGLE) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(GENLSTHDR ) XMBRATR(RPGLE) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
              XMLGENMBR  XMBR(LSTSPLF_T ) XMBRATR(RPGLE) +
-                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(RADDATZ) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
                           XTOSRCF(QLSTSPLF  ) XOBJTYPE(*PGM   ) +
-                          XGENCRT(*NO ) XPARAM(*BLANK)                /* RADD */
-                                                                      /* RADD */
-             XMLGENMBR  XMBR(XDERRCODE ) XMBRATR(PF   ) +
-                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(RADDATZ) +
-                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
-                          XGENCRT(*NO ) XPARAM(*BLANK)                /* RADD */
-                                                                      /* RADD */
-             XMLGENMBR  XMBR(XDMSG     ) XMBRATR(PF   ) +
-                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(RADDATZ) +
-                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
-                          XGENCRT(*NO ) XPARAM(*BLANK)                /* RADD */
-                                                                      /* RADD */
-             XMLGENMBR  XMBR(XDQOBJ    ) XMBRATR(PF   ) +
-                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(RADDATZ) +
-                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
-                          XGENCRT(*NO ) XPARAM(*BLANK)                /* RADD */
-                                                                      /* RADD */
-             XMLGENMBR  XMBR(XDSPLA0100) XMBRATR(PF   ) +
-                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(RADDATZ) +
-                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
-                          XGENCRT(*NO ) XPARAM(*BLANK)                /* RADD */
-                                                                      /* RADD */
-             XMLGENMBR  XMBR(XDSPLF0100) XMBRATR(PF   ) +
-                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(RADDATZ) +
-                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
-                          XGENCRT(*NO ) XPARAM(*BLANK)                /* RADD */
-                                                                      /* RADD */
-/* ---------------------------------- */                              /* RADD */
-/*  Create external data structures   */                              /* RADD */
-/* ---------------------------------- */                              /* RADD */
-             XMLGENCMD  XCMD(CRTPF FILE(&TOLIB/GENDTASTRC) +
-                          SRCFILE(&TOLIB/QLSTSPLF) SRCMBR(*FILE) +
-                          FILETYPE(*DATA) MBR(*FILE) MAXMBRS(1))      /* RADD */
+                          XGENCRT(*NO ) XPARAM(*BLANK)
 
-             XMLGENCMD  XCMD(CRTPF FILE(&TOLIB/XDERRCODE ) +
-                          SRCFILE(&TOLIB/QLSTSPLF) SRCMBR(*FILE) +
-                          FILETYPE(*DATA) MBR(*FILE) MAXMBRS(1))      /* RADD */
-                                                                      /* RADD */
-             XMLGENCMD  XCMD(CRTPF FILE(&TOLIB/XDMSG     ) +
-                          SRCFILE(&TOLIB/QLSTSPLF) SRCMBR(*FILE) +
-                          FILETYPE(*DATA) MBR(*FILE) MAXMBRS(1))      /* RADD */
-                                                                      /* RADD */
-             XMLGENCMD  XCMD(CRTPF FILE(&TOLIB/XDQOBJ    ) +
-                          SRCFILE(&TOLIB/QLSTSPLF) SRCMBR(*FILE) +
-                          FILETYPE(*DATA) MBR(*FILE) MAXMBRS(1))      /* RADD */
-                                                                      /* RADD */
-             XMLGENCMD  XCMD(CRTPF FILE(&TOLIB/XDSPLA0100) +
-                          SRCFILE(&TOLIB/QLSTSPLF) SRCMBR(*FILE) +
-                          FILETYPE(*DATA) MBR(*FILE) MAXMBRS(1))      /* RADD */
-                                                                      /* RADD */
-             XMLGENCMD  XCMD(CRTPF FILE(&TOLIB/XDSPLF0100) +
-                          SRCFILE(&TOLIB/QLSTSPLF) SRCMBR(*FILE) +
-                          FILETYPE(*DATA) MBR(*FILE) MAXMBRS(1))      /* RADD */
-                                                                      /* RADD */
-/* ---------------------------------- */                              /* RADD */
-/*  Create service program            */                              /* RADD */
-/* ---------------------------------- */                              /* RADD */
-             XMLGENCMD  XCMD(CRTRPGMOD MODULE(&TOLIB/LSTSPLF   ) +
-                          SRCFILE(&TOLIB/QLSTSPLF  ) +
-                          SRCMBR(*MODULE) +
-                          DBGVIEW(*LIST) +
-                          TRUNCNBR(*NO))                              /* RADD */
-                                                                      /* RADD */
-             XMLGENCMD  XCMD(CRTSRVPGM SRVPGM(&TOLIB/LSTSPLF   ) +
-                          MODULE(&TOLIB/LSTSPLF)  +
-                          EXPORT(*ALL) +
-                          ACTGRP(*CALLER) +
-                          DETAIL(*BASIC) +
-                          ALWUPD(*YES) +
-                          ALWLIBUPD(*YES) +
-                          TEXT('SrvPgm  : List Spooled Files  '))     /* RADD */
-                                                                      /* RADD */
-/* ---------------------------------- */                              /* RADD */
-/*  Create test program               */                              /* RADD */
-/* ---------------------------------- */                              /* RADD */
-             XMLGENCMD  XCMD(CRTRPGMOD MODULE(&TOLIB/LSTSPLF_T ) +
-                          SRCFILE(&TOLIB/QLSTSPLF  ) +
-                          SRCMBR(*MODULE) +
-                          DBGVIEW(*LIST) +
-                          TRUNCNBR(*NO)) +
-                          XCND(YES)                                   /* RADD */
-                                                                      /* RADD */
-             XMLGENCMD  XCMD(CRTPGM       PGM(&TOLIB/LSTSPLF_T ) +
-                          MODULE(*PGM) +
-                          BNDSRVPGM(&TOLIB/LSTSPLF) +
-                          ACTGRP(*NEW) +
-                          DETAIL(*BASIC)                        ) +
-                          XCND(YES)                                   /* RADD */
-                                                                      /* RADD */
-/* ---------------------------------- */                              /* RADD */
-/*  Delete obsolete objects           */                              /* RADD */
-/* ---------------------------------- */                              /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/GENDTASTRC))     /* RADD */
-             XMLGENCMD  XCMD(DLTMOD    MODULE(&TOLIB/LSTSPLF   ))     /* RADD */
-             XMLGENCMD  XCMD(DLTMOD    MODULE(&TOLIB/LSTSPLF_T ))     /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/XDERRCODE ))     /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/XDMSG     ))     /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/XDQOBJ    ))     /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/XDSPLA0100))     /* RADD */
-             XMLGENCMD  XCMD(DLTF        FILE(&TOLIB/XDSPLF0100))     /* RADD */
+             XMLGENMBR  XMBR(LSTSPLF   ) XMBRATR(BND  ) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*PGM   ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(LSTSPLFR1 ) XMBRATR(RPGLE) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*PGM   ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(PLSTSPLF  ) XMBRATR(RPGLE) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*PGM   ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(PUSLUTILS ) XMBRATR(RPGLE) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*PGM   ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(QUSLSPL   ) XMBRATR(PF   ) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(QUSRSPLA  ) XMBRATR(PF   ) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*FILE  ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+             XMLGENMBR  XMBR(USLUTILS  ) XMBRATR(RPGLE) +
+                          XFROMSRCF(QLSTSPLF  ) XFROMSRCL(TOOLS400) +
+                          XTOSRCF(QLSTSPLF  ) XOBJTYPE(*PGM   ) +
+                          XGENCRT(*NO ) XPARAM(*BLANK)
+
+/* ---------------------------------- */
+/*  Create objects                    */
+/* ---------------------------------- */
+             XMLGENCMD  XCMD(CRTBNDCL PGM(&TOLIB/A_INSTALL) +
+                          SRCFILE(&TOLIB/QLSTJOB) SRCMBR(*PGM) +
+                          DFTACTGRP(*NO) ACTGRP(*NEW) +
+                          DBGVIEW(*LIST)) XDLTSPLF(A_INSTALL)
+
+             XMLGENCMD  XCMD(CALL PGM(&TOLIB/A_INSTALL) +
+                             PARM('&TGTRLS' '&SRCFILE' '&TOLIB' '&CRTTSTPGM'))
+             XMLGENCMD  XCMD(DLTPGM PGM(&TOLIB/A_INSTALL))
 

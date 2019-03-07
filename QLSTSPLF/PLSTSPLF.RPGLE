@@ -1,99 +1,92 @@
-      *=====================================================================*                 RADDAT
-      *  Author  :  Thomas Raddatz                                          *                 RADDAT
-      *  Date    :  16.09.2002                                              *                 RADDAT
-      *  E-mail  :  thomas.raddatz@tools400.de                              *                 RADDAT
-      *  Homepage:  www.tools400.de                                         *                 RADDAT
-      *=====================================================================*                 RADDAT
-      *                                                                                       RADDAT
-      *  Referenzfelder                                                                       RADDAT
-      /IF NOT DEFINED(spla0100_t)                                                             RADDAT
-      /DEFINE spla0100_t                                                                      RADDAT
-     D spla0100_t    E DS                  extname(XDSPLA0100) based(pDummy)                  RADDAT
-     D                                     prefix(spla0100_t )                                RADDAT
-      /ENDIF                                                                                  RADDAT
-      *                                                                                       RADDAT
-      *===============================================================*                       RADDAT
-      *  Reference fields                                                                     RADDAT
-      *===============================================================*                       RADDAT
-     D lstSplF_handle_t...                                                                    RADDAT
-     D                 S               *   based(pDummy)                                      RADDAT
+      *=====================================================================*
+      *  Author  :  Thomas Raddatz                                          *
+      *  Date    :  16.09.2002                                              *
+      *  E-mail  :  thomas.raddatz@tools400.de                              *
+      *  Homepage:  www.tools400.de                                         *
+      *=====================================================================*
       *
-      *==================================================================*                    RADDAT
-      *  Open List Of Spooled Files                                                           RADDAT
-      *==================================================================*                    RADDAT
+      /copy qlstsplf,qusrspla                     List Spooled Files (QUSLSPL) API
       *
-     D f_opnSplFLst...                                                                        RADDAT
-     D                 PR              N   opdesc                                             RADDAT
-     D                                     extproc('LSTSPLF+                                  RADDAT
-     D                                     _f_opnSplFLst+                                     RADDAT
-     D                                     ')                                                 RADDAT
-     D  i_user                       10A   value                                              RADDAT
-     D  i_outQ                       10A   value                                              RADDAT
-     D  i_outQLib                    10A   value                                              RADDAT
-     D  i_formType                   10A   value                                              RADDAT
-     D  i_userData                   10A   value                                              RADDAT
+      *===============================================================*
+      *  Reference fields
+      *===============================================================*
+     D lstSplF_handle_t...
+     D                 S               *   based(pDummy)
+      *
+      *==================================================================*
+      *  Open List Of Spooled Files
+      *==================================================================*
+      *
+     D f_opnSplFLst...
+     D                 PR              N   opdesc
+     D                                     extproc('LSTSPLF+
+     D                                     _f_opnSplFLst+
+     D                                     ')
+     D  i_user                       10A   value
+     D  i_outQ                       10A   value
+     D  i_outQLib                    10A   value
+     D  i_formType                   10A   value
+     D  i_userData                   10A   value
      D  i_orderBy                    10A   value
-     D  o_handle                                  like(lstSplF_handle_t)                      RADDAT
-     D  o_msg                     32767A          options(*nopass :                           RADDAT
-     D                                                    *varsize)                           RADDAT
+     D  o_handle                                  like(lstSplF_handle_t)
+     D  o_msg                     32767A          options(*nopass: *varsize)
       *
-      *==================================================================*                    RADDAT
-      *  Close List Of Spooled Files                                                          RADDAT
-      *==================================================================*                    RADDAT
+      *==================================================================*
+      *  Close List Of Spooled Files
+      *==================================================================*
       *
-     D f_cloSplFLst...                                                                        RADDAT
+     D f_cloSplFLst...
      D                 PR              N
-     D                                     extproc('LSTSPLF+                                  RADDAT
-     D                                     _f_cloSplFLst+                                     RADDAT
-     D                                     ')                                                 RADDAT
-     D  io_handle                                 like(lstSplF_handle_t)                      RADDAT
+     D                                     extproc('LSTSPLF+
+     D                                     _f_cloSplFLst+
+     D                                     ')
+     D  io_handle                                 like(lstSplF_handle_t)
       *
-      *==================================================================*                    RADDAT
-      *  Get First Spooled File                                                               RADDAT
-      *==================================================================*                    RADDAT
+      *==================================================================*
+      *  Get First Spooled File
+      *==================================================================*
       *
-     D f_getFirstSplF...                                                                      RADDAT
-     D                 PR              N   opdesc                                             RADDAT
-     D                                     extproc('LSTSPLF+                                  RADDAT
-     D                                     _f_getFirstSplF+                                   RADDAT
-     D                                     ')                                                 RADDAT
-     D  i_handle                           value  like(lstSplF_handle_t)                      RADDAT
-     D  o_data                    32767A   options(*varsize)                                  RADDAT
+     D f_getFirstSplF...
+     D                 PR              N   opdesc
+     D                                     extproc('LSTSPLF+
+     D                                     _f_getFirstSplF+
+     D                                     ')
+     D  i_handle                           value  like(lstSplF_handle_t)
+     D  o_data                    32767A   options(*varsize)
       *
-      *==================================================================*                    RADDAT
-      *  Get Next Spooled File                                                                RADDAT
-      *==================================================================*                    RADDAT
+      *==================================================================*
+      *  Get Next Spooled File
+      *==================================================================*
       *
-     D f_getNextSplF...                                                                       RADDAT
-     D                 PR              N   opdesc                                             RADDAT
-     D                                     extproc('LSTSPLF+                                  RADDAT
-     D                                     _f_getNextSplF+                                    RADDAT
-     D                                     ')                                                 RADDAT
-     D  i_handle                           value  like(lstSplF_handle_t)                      RADDAT
-     D  o_data                    32767A   options(*varsize)                                  RADDAT
-      *                                                                                       RADDAT
-      *==================================================================*                    RADDAT
-      *  Get Number of Spooled Files available                                                RADDAT
-      *==================================================================*                    RADDAT
-      *                                                                                       RADDAT
-     D f_getNumSplFAvl...                                                                     RADDAT
-     D                 PR            10I 0                                                    RADDAT
-     D                                     extproc('LSTSPLF+                                  RADDAT
-     D                                     _f_getNumSplFAvl+                                  RADDAT
-     D                                     ')                                                 RADDAT
-     D  i_handle                           value  like(lstSplF_handle_t)                      RADDAT
-      *                                                                                       RADDAT
-      *==================================================================*                    RADDAT
-      *  Retrieve Spooled File Attributes                                                     RADDAT
-      *==================================================================*                    RADDAT
-      *                                                                                       RADDAT
-     D f_rtvSplFA...                                                                          RADDAT
-     D                 PR                  opdesc like(spla0100_t)                            RADDAT
-     D                                     extproc('LSTSPLF+                                  RADDAT
-     D                                     _f_rtvSplFA+                                       RADDAT
-     D                                     ')                                                 RADDAT
-     D  i_intJobID                   16A   const                                              RADDAT
-     D  i_intSplFID                  16A   const                                              RADDAT
-     D  o_msg                     32767A         options(*nopass :                            RADDAT
-     D                                                   *varsize)                            RADDAT
+     D f_getNextSplF...
+     D                 PR              N   opdesc
+     D                                     extproc('LSTSPLF+
+     D                                     _f_getNextSplF+
+     D                                     ')
+     D  i_handle                           value  like(lstSplF_handle_t)
+     D  o_data                    32767A   options(*varsize)
+      *
+      *==================================================================*
+      *  Get Number of Spooled Files available
+      *==================================================================*
+      *
+     D f_getNumSplFAvl...
+     D                 PR            10I 0
+     D                                     extproc('LSTSPLF+
+     D                                     _f_getNumSplFAvl+
+     D                                     ')
+     D  i_handle                           value  like(lstSplF_handle_t)
+      *
+      *==================================================================*
+      *  Retrieve Spooled File Attributes
+      *==================================================================*
+      *
+     D f_rtvSplFA...
+     D                 PR                  opdesc like(spla0100_t)
+     D                                     extproc('LSTSPLF+
+     D                                     _f_rtvSplFA+
+     D                                     ')
+     D  i_intJobID                   16A   const
+     D  i_intSplFID                  16A   const
+     D  o_msg                     32767A         options(*nopass: *varsize)
       *
