@@ -94,7 +94,6 @@
                           SRCMBR(LSTSPLF) +
                           ACTGRP(*CALLER) +
                           DETAIL(*BASIC) +
-                          BNDSRVPGM(&TOLIB/BASICS1) +
                           TEXT('List Spooled Files API') +
                           TGTRLS(&TGTRLS)
              DLTSPLF    FILE(LSTSPLF) JOB(*) SPLNBR(*LAST)
