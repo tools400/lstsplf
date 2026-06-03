@@ -1,79 +1,58 @@
-      /if not defined(PUSLUTILS)
-      /define PUSLUTILS
+**free
+/if not defined(PUSLUTILS)
+/define PUSLUTILS
 
-      /copy qlstsplf,fdqobj                       Qualified object name structure
-      /copy qlstsplf,fdmsg                        Message structure
-      /copy qlstsplf,fderrcode                    API error code
-      /copy qlstsplf,genlsthdr                    Generic list API header
+/copy qlstsplf,fdqobj qualified object name structure
+/copy qlstsplf,fdmsg Message structure
+/copy qlstsplf,fderrcode API error code
+/copy qlstsplf,genlsthdr Generic list API header
 
-     D Utils_crtUsrSpc...
-     D                 PR              N
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_crtUsrSpc')
-     D  i_qUsrSpc                          value  likeds(qObj_t)
-     D  i_text                       50A   value
-     D  o_errCode                                 likeds(errCode_t)
+dcl-pr Utils_crtUsrSpc ind extproc('USLUTILS_Utils_crtUsrSpc');
+  i_qUsrSpc likeds(qObj_t) value;
+  i_text    char(50) value;
+  o_errCode likeds(errCode_t);
+end-pr;
 
-     D Utils_getPtrUsrSpc...
-     D                 PR              *
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_getPtrUsrSpc')
-     D  i_qUsrSpc                          value  likeds(qObj_t)
-     D  o_errCode                                 likeds(errCode_t)
+dcl-pr Utils_getPtrUsrSpc pointer extproc('USLUTILS_Utils_getPtrUsrSpc');
+  i_qUsrSpc likeds(qObj_t) value;
+  o_errCode likeds(errCode_t);
+end-pr;
 
-     D Utils_dltUsrSpc...
-     D                 PR              N
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_dltUsrSpc')
-     D  i_qUsrSpc                          value  likeds(qObj_t)
+dcl-pr Utils_dltUsrSpc ind extproc('USLUTILS_Utils_dltUsrSpc');
+  i_qUsrSpc likeds(qObj_t) value;
+end-pr;
 
-     D Utils_getTmpName...
-     D                 PR              N
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_getTmpName')
-     D  o_qUsrSpc                                 likeds(qObj_t)
+dcl-pr Utils_getTmpName ind extproc('USLUTILS_Utils_getTmpName');
+  o_qUsrSpc likeds(qObj_t);
+end-pr;
 
-     D Utils_getListEntry...
-     D                 PR              N
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_getListEntry')
-     D  i_pUsrSpc                      *   const
-     D  i_index                      10I 0 const
-     D  i_length                     10I 0 const
-     D  o_data                    32767A          options(*varsize)
+dcl-pr Utils_getListEntry ind extproc('USLUTILS_Utils_getListEntry');
+  i_pUsrSpc pointer const;
+  i_index   int(10) const;
+  i_length  int(10) const;
+  o_data    char(32767) options(*varsize);
+end-pr;
 
-     D Utils_isApiError...
-     D                 PR              N
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_isApiError')
-     D  i_errCode                          value  likeds(errCode_t)
+dcl-pr Utils_isApiError ind extproc('USLUTILS_Utils_isApiError');
+  i_errCode likeds(errCode_t) value;
+end-pr;
 
-     D Utils_newApiErrCode...
-     D                 PR                         likeds(errCode_t)
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_newApiErrCode')
-     D  i_monmsg                       N   value
+dcl-pr Utils_newApiErrCode likeds(errCode_t) extproc('USLUTILS_Utils_newApiErrCode');
+  i_monmsg ind value;
+end-pr;
 
-     D Utils_cvtApiErrCodeToMsg...
-     D                 PR                         likeds(msg_t)
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_cvtApiErrCodeToMsg')
-     D  i_errCode                          value  likeds(errCode_t)
+dcl-pr Utils_cvtApiErrCodeToMsg likeds(msg_t) extproc('USLUTILS_Utils_cvtApiErrCodeToMsg');
+  i_errCode likeds(errCode_t) value;
+end-pr;
 
-     D Utils_openPrinter...
-     D                 PR
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_openPrinter')
+dcl-pr Utils_openPrinter extproc('USLUTILS_Utils_openPrinter');
+end-pr;
 
-     D Utils_print...
-     D                 PR
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_print')
-     D  i_text                       80A   const varying options(*nopass)
+dcl-pr Utils_print extproc('USLUTILS_Utils_print');
+  i_text varchar(80) options(*nopass) const;
+end-pr;
 
-     D Utils_closePrinter...
-     D                 PR
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_closePrinter')
+dcl-pr Utils_closePrinter extproc('USLUTILS_Utils_closePrinter');
+end-pr;
 
-      /endif
+/endif

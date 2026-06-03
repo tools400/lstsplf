@@ -1,7 +1,8 @@
-      /if not defined(FDBOOLEAN)
-      /define FDBOOLEAN
+**free
+/if not defined(FDBOOLEAN)
+/define FDBOOLEAN
 
-     D TRUE            c                   *on
-     D FALSE           c                   *off
+dcl-c TRUE *on;
+dcl-c FALSE *off;
 
-      /endif
+/endif

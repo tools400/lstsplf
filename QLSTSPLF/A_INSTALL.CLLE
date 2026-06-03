@@ -22,7 +22,7 @@
      /* =================================================================== */
      /*  History:                                                           */
      /*                                                                     */
-     /*  Datum       Name          Änderung                                 */
+     /*  Datum       Name          nderung                                 */
      /*  ----------  ------------  ---------------------------------------  */
      /*                                                                     */
      /* =================================================================== */
@@ -114,7 +114,7 @@
 
                 CRTPGM     PGM(&TOLIB/LSTSPLF_T) +
                              MODULE(&TOLIB/LSTSPLF_T &TOLIB/USLUTILS) +
-                             BNDSRVPGM(&TOLIB/LSTSPLF) +
+                             BNDSRVPGM(*LIBL/LSTSPLF) +
                              ACTGRP(*NEW) +
                              DETAIL(*BASIC) +
                              TGTRLS(&TGTRLS)

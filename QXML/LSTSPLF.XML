@@ -51,7 +51,7 @@
       appblddate CDATA #REQUIRED
      >
      ]>
-<upload  appname="LSTSPLF"  appauthor="Thomas Raddatz"  appblddate=" 9/10/2019">
+<upload  appname="LSTSPLF"  appauthor="Thomas Raddatz"  appblddate=" 6/03/2026">
 <install_instructions><![CDATA[
      *----------------------------------------------------------------      ------
      *  1. Upload entire XML to your AS/400 to a source file 112 long, into any mbr
@@ -1289,7 +1289,7 @@ mbrtext =  "LSTJOB - Installer                                "
 srcfile =  "QLSTJOB   "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
      /* =================================================================== */
      /*                                                                     */
@@ -1315,7 +1315,7 @@ srccssid=  "00273">
      /* =================================================================== */
      /*  History:                                                           */
      /*                                                                     */
-     /*  Datum       Name          Änderung                                 */
+     /*  Datum       Name           nderung                                 */
      /*  ----------  ------------  ---------------------------------------  */
      /*                                                                     */
      /* =================================================================== */
@@ -1407,7 +1407,7 @@ srccssid=  "00273">
 
                 CRTPGM     PGM(&TOLIB/LSTSPLF_T) +
                              MODULE(&TOLIB/LSTSPLF_T &TOLIB/USLUTILS) +
-                             BNDSRVPGM(&TOLIB/LSTSPLF) +
+                             BNDSRVPGM(*LIBL/LSTSPLF) +
                              ACTGRP(*NEW) +
                              DETAIL(*BASIC) +
                              TGTRLS(&TGTRLS)
@@ -1437,7 +1437,7 @@ mbrtext =  "LSTJOB Readme                                     "
 srcfile =  "QLSTJOB   "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
 LSTSPLF - A Tools/400 Service Program
 -------------------------------------
@@ -1467,16 +1467,15 @@ mbrtext =  "Copyright Information                             "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-      /if not defined(COPYRIGHT_DSPEC)
-     H COPYRIGHT('V1.3.1   - 24.07.2019 - mailto: thomas.raddatz@tools400.de')
-      /eof
-      /endif
-     D LSTSPLF_VERSION...
-     D                 C                   '1.3.1'
-     D LSTSPLF_DATE...
-     D                 C                   '24.07.2019'
+**free
+/if not defined(COPYRIGHT_DSPEC)
+ctl-opt copyright('V1.4 - 03.06.2026 - mailto: thomas.raddatz@tools400.de');
+/eof
+/endif
+dcl-c LSTSPLF_VERSION '1.4';
+dcl-c LSTSPLF_DATE '03.06.2026';
 ]]>  </copysrc>
 </mbr>
 <sendmsg  sendmsgid="CPF9897" sendmsgtype = "*STATUS   "><![CDATA[
@@ -1490,15 +1489,16 @@ mbrtext =  "Boolean Constants                                 "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-      /if not defined(FDBOOLEAN)
-      /define FDBOOLEAN
+**free
+/if not defined(FDBOOLEAN)
+/define FDBOOLEAN
 
-     D TRUE            c                   *on
-     D FALSE           c                   *off
+dcl-c TRUE *on;
+dcl-c FALSE *off;
 
-      /endif
+/endif
 ]]>  </copysrc>
 </mbr>
 <sendmsg  sendmsgid="CPF9897" sendmsgtype = "*STATUS   "><![CDATA[
@@ -1512,21 +1512,23 @@ mbrtext =  "cpybk   : API error code                          "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-      /if not defined(errCode_t )
-      /define errCode_t
-      *===============================================================*
-      *  API error code                                               *
-      *===============================================================*
-     d errCode_t       ds                  qualified           based(pDummy)
-     d  bytPrv                       10i 0
-     d  bytAvl                       10i 0
-     d  excID                         7a
-     d  reserved_1                    1a
-     d  excDta                      256a
-      *
-      /endif
+**free
+/if not defined(errCode_t)
+/define errCode_t
+//===============================================================*
+//  API error code                                               *
+//===============================================================*
+dcl-ds errCode_t qualified template;
+  bytPrv     int(10);
+  bytAvl     int(10);
+  excID      char(7);
+  reserved_1 char(1);
+  excDta     char(256);
+end-ds;
+
+/endif
 ]]>  </copysrc>
 </mbr>
 <sendmsg  sendmsgid="CPF9897" sendmsgtype = "*STATUS   "><![CDATA[
@@ -1540,26 +1542,29 @@ mbrtext =  "cpybk   : Message                                 "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-      /if not defined(msg_t     )
-      /define msg_t
-      * ============================================================= *
-      *   Message structure                                           *
-      * ============================================================= *
-      *
-     d msg_t           ds                  qualified           based(pDummy)
-     d  ID                                 likeds(msgID_t)
-     d  data                        512A
-     d  type                         10a
-     d  file                         10a
-     d  lib                          10a
-      *
-     d msgID_t         ds                  qualified           based(pDummy)
-     d  prefix                        3a
-     d  nbr                           4S 0
-      *
-      /endif
+**free
+/if not defined(msg_t)
+/define msg_t
+// ============================================================= *
+//   Message structure                                           *
+// ============================================================= *
+
+dcl-ds msg_t qualified template;
+  ID   likeds(msgID_t);
+  data char(512);
+  type char(10);
+  file char(10);
+  lib  char(10);
+end-ds;
+
+dcl-ds msgID_t qualified template;
+  prefix char(3);
+  nbr    zoned(4);
+end-ds;
+
+/endif
 ]]>  </copysrc>
 </mbr>
 <sendmsg  sendmsgid="CPF9897" sendmsgtype = "*STATUS   "><![CDATA[
@@ -1573,19 +1578,21 @@ mbrtext =  "cpybk   : Qualified object name                   "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-      /if not defined(qObj_t    )
-      /define qObj_t
-      * ============================================================= *
-      *   Qualified object name                                       *
-      *===============================================================*
-      *
-     d qObj_t          ds                  qualified           based(pDummy)
-     d  name                         10a
-     d  lib                          10a
-      *
-      /endif
+**free
+/if not defined(qObj_t)
+/define qObj_t
+// ============================================================= *
+//   Qualified object name                                       *
+//===============================================================*
+
+dcl-ds qObj_t qualified template;
+  name char(10);
+  lib  char(10);
+end-ds;
+
+/endif
 ]]>  </copysrc>
 </mbr>
 <sendmsg  sendmsgid="CPF9897" sendmsgtype = "*STATUS   "><![CDATA[
@@ -1599,42 +1606,43 @@ mbrtext =  "Generic List Header for List APIs                 "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-      /if not defined(genLstHdr_t)
-      /define genLstHdr_t
-      * ============================================================= *
-      *   Generic List Header for List APIs                           *
-      *===============================================================*
-      *
-     d genLstHdr_t...
-     d                 ds                  qualified               based(pDummy)
-     d  userArea               1     64A
-     d  size                  65     68I 0
-     d  release               69     72A
-     d  format                73     80A
-     d  API                   81     90A
-     d  crtDate               91    103A
-     d  infStat              104    104A
-     d  sizeUsrSpc           105    108I 0
-     d  ofsInpSct            109    112I 0
-     d  sizeInpSct           113    116I 0
-     d  ofsHdrSct            117    120I 0
-     d  sizeHdrSct           121    124I 0
-     d  ofsLstSct            125    128I 0
-     d  sizeLstSct           129    132I 0
-     d  numE                 133    136I 0
-     d  sizeE                137    140I 0
-     d  CCSID                141    144I 0
-     d  cntryID              145    146A
-     d  lngID                147    149A
-     d  subLstInd            150    150A
-     d  reserved_01          151    192A
-      *  Additional Format 0300 Fields
-     d  APIEntryPoint        193    448A
-     d  reserved_02          449    576A
-      *
-      /endif
+**free
+/if not defined(genLstHdr_t)
+/define genLstHdr_t
+// ============================================================= *
+//   Generic List Header for List APIs                           *
+//===============================================================*
+
+dcl-ds genLstHdr_t qualified template;
+  userArea      char(64);
+  size          int(10);
+  release       char(4);
+  format        char(8);
+  API           char(10);
+  crtDate       char(13);
+  infStat       char(1);
+  sizeUsrSpc    int(10);
+  ofsInpSct     int(10);
+  sizeInpSct    int(10);
+  ofsHdrSct     int(10);
+  sizeHdrSct    int(10);
+  ofsLstSct     int(10);
+  sizeLstSct    int(10);
+  numE          int(10);
+  sizeE         int(10);
+  CCSID         int(10);
+  cntryID       char(2);
+  lngID         char(3);
+  subLstInd     char(1);
+  reserved_01   char(42);
+  //  Additional Format 0300 Fields
+  APIEntryPoint char(256);
+  reserved_02   char(128);
+end-ds;
+
+/endif
 ]]>  </copysrc>
 </mbr>
 <sendmsg  sendmsgid="CPF9897" sendmsgtype = "*STATUS   "><![CDATA[
@@ -1648,221 +1656,219 @@ mbrtext =  "Programm: Testpgm  for SrvPgm LSTSPLF             "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-       //=====================================================================*
-       //  Author  :  Thomas Raddatz                                          *
-       //  Date    :  16.09.2002                                              *
-       //  E-mail  :  thomas.raddatz@tools400.de                              *
-       //  Homepage:  www.tools400.de                                         *
-       //=====================================================================*
-       //                                                                     *
-       //  This software is free software, you can redistribute it and/or     *
-       //  modify it under the terms of the GNU General Public License (GPL)  *
-       //  as published by the Free Software Foundation.                      *
-       //                                                                     *
-       //  See GNU General Public License for details.                        *
-       //          http://www.opensource.org                                  *
-       //          http://www.opensource.org/licenses/gpl-license.html        *
-       //                                                                     *
-       //=====================================================================*
-       //  History:                                                           *
-       //                                                                     *
-       //  Datum       Name          Änderung                                 *
-       //  ----------  ------------  ---------------------------------------  *
-       //  26.09.2002  Th.Raddatz    Added reference field msg_t.             *
-       //  26.09.2002  Th.Raddatz    Added msg parameter to the               *
-       //                            f_opnSplFLst() procedure call to get     *
-       //                            error message back to caller.            *
-       //  26.02.2019  Th.Raddatz    Converted to /free.                      *
-       //                                                                     *
-       //=====================================================================*
-       //   >>PRE-COMPILER<<                                                  *
-       //     >>CRTCMD<<  CRTRPGMOD    MODULE(&LI/&OB) +                      *
-       //                              SRCFILE(&SL/&SF) SRCMBR(&SM);          *
-       //     >>IMPORTANT<<                                                   *
-       //       >>PARM<< TRUNCNBR(*NO);                                       *
-       //       >>PARM<< DBGVIEW(*LIST);                                      *
-       //       >>PARM<< OPTION(*EVENTF);                                     *
-       //     >>END-IMPORTANT<<                                               *
-       //     >>EXECUTE<<                                                     *
-       //     >>CMD<<     CRTPGM       PGM(&LI/&OB) +                         *
-       //                              MODULE(&LI/&OB +                       *
-       //                                     &LI/USLUTILS) +                 *
-       //                              BNDSRVPGM(&LI/LSTSPLF) +               *
-       //                              ACTGRP(*NEW) +                         *
-       //                              DETAIL(*BASIC);                        *
-       //   >>END-PRE-COMPILER<<                                              *
-       //=====================================================================*
-     H EXTBININT(*YES)
-     H DATFMT(*ISO) TIMFMT(*ISO) DEBUG(*YES)
-       //=====================================================================*
-      /copy qlstsplf,plstsplf                     List Spooled Files - Public Interface
-      /copy qlstsplf,puslutils                    Utility for IBM QUSL* List APIs
+**free
+//=====================================================================*
+//  Author  :  Thomas Raddatz                                          *
+//  Date    :  16.09.2002                                              *
+//  E-mail  :  thomas.raddatz@tools400.de                              *
+//  Homepage:  www.tools400.de                                         *
+//=====================================================================*
+//                                                                     *
+//  This software is free software, you can redistribute it and/or     *
+//  modify it under the terms of the GNU General Public License (GPL)  *
+//  as published by the Free Software Foundation.                      *
+//                                                                     *
+//  See GNU General Public License for details.                        *
+//          http://www.opensource.org                                  *
+//          http://www.opensource.org/licenses/gpl-license.html        *
+//                                                                     *
+//=====================================================================*
+//  History:                                                           *
+//                                                                     *
+//  Datum       Name           nderung                                 *
+//  ----------  ------------  ---------------------------------------  *
+//  26.09.2002  Th.Raddatz    Added reference field msg_t.             *
+//  26.09.2002  Th.Raddatz    Added msg parameter to the               *
+//                            f_opnSplFLst() procedure call to get     *
+//                            error message back to caller.            *
+//  26.02.2019  Th.Raddatz    Converted to /free.                      *
+//                                                                     *
+//=====================================================================*
+//   >>PRE-COMPILER<<                                                  *
+//     >>CRTCMD<<  CRTRPGMOD    MODULE(&LI/&OB) +                      *
+//                              SRCFILE(&SL/&SF) SRCMBR(&SM);          *
+//     >>IMPORTANT<<                                                   *
+//       >>PARM<< TRUNCNBR(*NO);                                       *
+//       >>PARM<< DBGVIEW(*LIST);                                      *
+//       >>PARM<< OPTION(*EVENTF);                                     *
+//     >>END-IMPORTANT<<                                               *
+//     >>EXECUTE<<                                                     *
+//     >>CMD<<     CRTPGM       PGM(&LI/&OB) +                         *
+//                              MODULE(&LI/&OB +                       *
+//                                     &LI/USLUTILS) +                 *
+//                              BNDSRVPGM(*LIBL/LSTSPLF) +             *
+//                              ACTGRP(*NEW) +                         *
+//                              DETAIL(*BASIC);                        *
+//   >>END-PRE-COMPILER<<                                              *
+//=====================================================================*
+ctl-opt extbinint(*yes);
+ctl-opt datfmt(*iso) timfmt(*iso) debug(*yes);
+//=====================================================================*
+/copy qlstsplf,plstsplf List Spooled Files - Public Interface
+/copy qlstsplf,puslutils Utility for IBM QUSL* List APIs
 
-      /copy qlstsplf,quslspl                      List Spooled Files (QUSLSPL) API
-      /copy qlstsplf,qusrspla                     Retrieve Spooled File Attributes (QUSRSPLA) API
-      /copy qlstsplf,fdmsg
+/copy qlstsplf,quslspl List Spooled files(QUSLSPL) API
+/copy qlstsplf,qusrspla Retrieve Spooled File attributes(QUSRSPLA) API
+/copy qlstsplf,fdmsg
 
-     D LSTSPLF_T...
-     D                 PR                  extpgm('LSTSPLF_T')
-     D  gi_user                      10A   const
-     D  gi_outQ                      10A   const
-     D  gi_outQLib                   10A   const
+dcl-pr LSTSPLF_T extpgm('LSTSPLF_T');
+  gi_user    char(10) const;
+  gi_outQ    char(10) const;
+  gi_outQLib char(10) const;
+end-pr;
 
-       //  Internal prototypes
-     D p_main...
-     D                 PR
-     D  i_user                       10A   const
-     D  i_outQ                       10A   const
-     D  i_outQLib                    10A   const
+//  Internal prototypes
+dcl-pr p_main;
+  i_user    char(10) const;
+  i_outQ    char(10) const;
+  i_outQLib char(10) const;
+end-pr;
 
-       //*******************************************************************
-       //  Program Entry Point
-       //*******************************************************************
-     D LSTSPLF_T...
-     D                 PI
-     D  gi_user                      10A   const
-     D  gi_outQ                      10A   const
-     D  gi_outQLib                   10A   const
-      /free
+//*******************************************************************
+//  Program Entry Point
+//*******************************************************************
+dcl-pi LSTSPLF_T;
+  gi_user    char(10) const;
+  gi_outQ    char(10) const;
+  gi_outQLib char(10) const;
+end-pi;
 
-       Utils_openPrinter();
+Utils_openPrinter();
 
-       p_main(gi_user: gi_outQ: gi_outQLib);
+p_main(gi_user: gi_outQ: gi_outQLib);
 
-       Utils_closePrinter();
+Utils_closePrinter();
 
-       *inlr = *on;
+*inlr = *on;
 
-      /end-free
 
-       //==================================================================*
-       //  Main procedure
-       //==================================================================*
-     P p_main...
-     P                 B                   export
-     D                 PI
-     D  i_user                       10A   const
-     D  i_outQ                       10A   const
-     D  i_outQLib                    10A   const
+//==================================================================*
+//  Main procedure
+//==================================================================*
+dcl-proc p_main export;
+  dcl-pi *n;
+    i_user    char(10) const;
+    i_outQ    char(10) const;
+    i_outQLib char(10) const;
+  end-pi;
 
-     D hSplFLst        S                   like(lstSplF_handle_t) inz
-     D isOpen          S               N   inz
-     D isFound         S               N   inz
+  dcl-s hSplFLst like(lstSplF_handle_t) inz;
+  dcl-s isOpen ind inz;
+  dcl-s isFound ind inz;
 
-     D splf0100        DS                  likeds(splf0100_t) inz
-     D spla0100        DS                  likeds(spla0100_t) inz
+  dcl-ds splf0100 likeds(splf0100_t) inz;
+  dcl-ds spla0100 likeds(spla0100_t) inz;
 
-     D output          DS                  qualified
-     D  blank1                        1A   inz
-     D  col1                         10A   inz
-     D  blank2                        1A   inz
-     D  col2                         10A   inz
-     D  blank3                        1A   inz
-     D  col3                         10A   inz
+  dcl-ds output qualified;
+    blank1 char(1) inz;
+    col1   char(10) inz;
+    blank2 char(1) inz;
+    col2   char(10) inz;
+    blank3 char(1) inz;
+    col3   char(10) inz;
+  end-ds;
 
-     D ok              S              1A   inz
-     D msg             S                   like(msg_t     )  inz
-       //-------------------------------------------------------------------
-      /free
+  dcl-s ok char(1) inz;
+  dcl-s msg like(msg_t) inz;
+  //-------------------------------------------------------------------
 
-       //  Print headline
-       Utils_print('Spooled files of user ' + %trim(i_user) +
-                   ' sorted by *USRDTA');
+  //  Print headline
+  Utils_print('Spooled files of user ' + %trim(i_user) +
+              ' sorted by *USRDTA');
 
-       Clear output;
-       output.col1 = 'SplF';
-       output.col2 = 'User';
-       output.col3 = '*USRDTA';
-       Utils_print(output);
+  Clear output;
+  output.col1 = 'SplF';
+  output.col2 = 'User';
+  output.col3 = '*USRDTA';
+  Utils_print(output);
 
-       Clear output;
-       output.col1 = *ALL'-';
-       output.col2 = *ALL'-';
-       output.col3 = *ALL'-';
-       Utils_print(output);
+  Clear output;
+  output.col1 = *ALL'-';
+  output.col2 = *ALL'-';
+  output.col3 = *ALL'-';
+  Utils_print(output);
 
-       //  Open list of spooled files
-       isOpen = f_opnSplFLst(i_user    :                                        // user
-                            '*ALL'     :                                        // outQ
-                            ''         :                                        // outQLib
-                            '*ALL'     :                                        // formType
-                            '*ALL'     :                                        // usrDta
-                            '*USRDTA'  :                                        // sort by
-                            hSplFLst   :                                        // handle
-                            msg        );
+  //  Open list of spooled files
+  isOpen = f_opnSplFLst(i_user    :                                        // user
+                       '*ALL'     :                                        // outQ
+                       ''         :                                        // outQLib
+                       '*ALL'     :                                        // formType
+                       '*ALL'     :                                        // usrDta
+                       '*USRDTA'  :                                        // sort by
+                       hSplFLst   :                                        // handle
+                       msg        );
 
-       isFound = f_getFirstSplF(hSplFLst :
-                               splf0100 );
+  isFound = f_getFirstSplF(hSplFLst :
+                          splf0100 );
 
-       dow isFound;
-          SPLA0100 = f_rtvSplFA(splf0100.intJobID: splf0100.intSplFID);
+  dow isFound;
+    SPLA0100 = f_rtvSplFA(splf0100.intJobID: splf0100.intSplFID);
 
-          Clear output;
-          output.col1 = spla0100.splF;
-          output.col2 = spla0100.user;
-          output.col3 = spla0100.userData;
-          Utils_print(output);
+    Clear output;
+    output.col1 = spla0100.splF;
+    output.col2 = spla0100.user;
+    output.col3 = spla0100.userData;
+    Utils_print(output);
 
-          isFound = f_getNextSplF(hSplFLst: splf0100);
-       enddo;
+    isFound = f_getNextSplF(hSplFLst: splf0100);
+  enddo;
 
-       Utils_print('#entries: ' + %trim(%editc(f_getNumSplFAvl(hSplFLst):'Z')));
+  Utils_print('#entries: ' + %trim(%editc(f_getNumSplFAvl(hSplFLst):'Z')));
 
-       //  Close list
-       f_cloSplFLst(hSplFLst);
+  //  Close list
+  f_cloSplFLst(hSplFLst);
 
-       Utils_print();
+  Utils_print();
 
-       //  Print headline
-       Utils_print('Spooled files of all users of output queue ' +
-                   %trim(i_outQLib) + '/' + %trim(i_outQ) +
-                   ' sorted by *USERNAME');
+  //  Print headline
+  Utils_print('Spooled files of all users of output queue ' +
+              %trim(i_outQLib) + '/' + %trim(i_outQ) +
+              ' sorted by *USERNAME');
 
-       Clear output;
-       output.col1 = 'User';
-       output.col2 = 'SplF';
-       output.col3 = '*USRDTA';
-       Utils_print(output);
+  Clear output;
+  output.col1 = 'User';
+  output.col2 = 'SplF';
+  output.col3 = '*USRDTA';
+  Utils_print(output);
 
-       Clear output;
-       output.col1 = *ALL'-';
-       output.col2 = *ALL'-';
-       output.col3 = *ALL'-';
-       Utils_print(output);
+  Clear output;
+  output.col1 = *ALL'-';
+  output.col2 = *ALL'-';
+  output.col3 = *ALL'-';
+  Utils_print(output);
 
-       //  Open list of spooled files
-       isOpen = f_opnSplFLst('*ALL'    :                                        // user
-                           i_outQ      :                                        // outQ
-                           i_outQLib   :                                        // outQLib
-                           '*ALL'      :                                        // formType
-                           '*ALL'      :                                        // usrDta
-                           '*USERNAME' :                                        // sort by
-                           hSplFLst    :                                        // handle
-                           msg         );
+  //  Open list of spooled files
+  isOpen = f_opnSplFLst('*ALL'    :                                        // user
+                      i_outQ      :                                        // outQ
+                      i_outQLib   :                                        // outQLib
+                      '*ALL'      :                                        // formType
+                      '*ALL'      :                                        // usrDta
+                      '*USERNAME' :                                        // sort by
+                      hSplFLst    :                                        // handle
+                      msg         );
 
-       isFound = f_getFirstSplF(hSplFLst: splf0100);
+  isFound = f_getFirstSplF(hSplFLst: splf0100);
 
-       dow isFound;
-          SPLA0100 = f_rtvSplFA(splf0100.intJobID: splf0100.intSplFID);
+  dow isFound;
+    SPLA0100 = f_rtvSplFA(splf0100.intJobID: splf0100.intSplFID);
 
-          Clear output;
-          output.col1 = spla0100.user;
-          output.col2 = spla0100.splF;
-          output.col3 = spla0100.userData;
-          Utils_print(output);
+    Clear output;
+    output.col1 = spla0100.user;
+    output.col2 = spla0100.splF;
+    output.col3 = spla0100.userData;
+    Utils_print(output);
 
-          isFound = f_getNextSplF(hSplFLst: splf0100);
-       enddo;
+    isFound = f_getNextSplF(hSplFLst: splf0100);
+  enddo;
 
-       Utils_print('#entries: ' + %trim(%editc(f_getNumSplFAvl(hSplFLst):'Z')));
+  Utils_print('#entries: ' + %trim(%editc(f_getNumSplFAvl(hSplFLst):'Z')));
 
-       //  Close list
-       f_cloSplFLst(hSplFLst);
+  //  Close list
+  f_cloSplFLst(hSplFLst);
 
-      /end-free
-     P                 E
+end-proc;
 
 ]]>  </copysrc>
 </mbr>
@@ -1877,7 +1883,7 @@ mbrtext =  "List Spooled Files API                            "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
      /* ====================================================================== */
      /* >>PRE-COMPILER<<                                                       */
@@ -1892,7 +1898,7 @@ srccssid=  "00273">
      /*     >>PARM<< ALWUPD(*YES);                                             */
      /*     >>PARM<< ALWLIBUPD(*YES);                                          */
      /*     >>PARM<< TEXT('Tools/400: List Spooled Files');                    */
-     /*     >>PARM<< TGTRLS(V7R1M0);                                           */
+     /*     >>PARM<< TGTRLS(V7R3M0);                                           */
      /*     >>PARM<< DETAIL(*BASIC);                                           */
      /*   >>END-IMPORTANT<<                                                    */
      /*   >>EXECUTE<<                                                          */
@@ -1923,610 +1929,590 @@ mbrtext =  "List Spooled Files - Public Interface             "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-       //=====================================================================*
-       //  Author  :  Thomas Raddatz                                          *
-       //  Date    :  16.09.2002                                              *
-       //  E-mail  :  thomas.raddatz@tools400.de                              *
-       //  Homepage:  www.tools400.de                                         *
-       //=====================================================================*
-       //                                                                     *
-       //  This software is free software, you can redistribute it and/or     *
-       //  modify it under the terms of the GNU General Public License (GPL)  *
-       //  as published by the Free Software Foundation.                      *
-       //                                                                     *
-       //  See GNU General Public License for details.                        *
-       //          http://www.opensource.org                                  *
-       //          http://www.opensource.org/licenses/gpl-license.html        *
-       //                                                                     *
-       //=====================================================================*
-       //  History:                                                           *
-       //                                                                     *
-       //  Datum       Name          Änderung                                 *
-       //  ----------  ------------  ---------------------------------------  *
-       //  26.09.2002  Th.Raddatz    Added DEFINE statements to the           *
-       //                            reference fields to prevent compiler     *
-       //                            error message RNF3316                    *
-       //  26.09.2002  Th.Raddatz    Changed how the API error message is     *
-       //                            is assigned to o_msg in routine          *
-       //                            f_opnSplFLst() to ensure proper value.   *
-       //  03.06.2003  Th.Raddatz    Changed service program to use a pointer *
-       //                            instead of a data structure as the       *
-       //                            handle.                                  *
-       //                            Added reference field for handle.        *
-       //  30.06.2003  Th.Raddatz    Removed improper const keyword from      *
-       //                            prototypes: QUSCRTUS, QUSDLTUS,          *
-       //                                        QUSPTRUS, QUSLSPL.           *
-       //  30.06.2003  Th.Raddatz    Changed definition of errCode parameter  *
-       //                            to use reference field.                  *
-       //  26.02.2019  Th.Raddatz    Converted to /free.                      *
-       //                                                                     *
-       //=====================================================================*
-       //   >>PRE-COMPILER<<                                                  *
-       //     >>CRTCMD<<  CRTRPGMOD    MODULE(&LI/&OB) +                      *
-       //                              SRCFILE(&SL/&SF) SRCMBR(&SM);          *
-       //     >>IMPORTANT<<                                                   *
-       //       >>PARM<< TRUNCNBR(*NO);                                       *
-       //       >>PARM<< DBGVIEW(*LIST);                                      *
-       //       >>PARM<< OPTION(*EVENTF);                                     *
-       //       >>PARM<< TGTRLS(V7R1M0);                                      *
-       //     >>END-IMPORTANT<<                                               *
-       //     >>EXECUTE<<                                                     *
-       //   >>END-PRE-COMPILER<<                                              *
-       //=====================================================================*
-     H NOMAIN
-     H OPTION(*SRCSTMT : *NODEBUGIO)
-     H EXTBININT(*YES) BNDDIR('QC2LE')
-     H DATFMT(*ISO) TIMFMT(*ISO) DEBUG(*YES)
-      /copy qlstsplf,copyright
+**free
+//=====================================================================*
+//  Author  :  Thomas Raddatz                                          *
+//  Date    :  16.09.2002                                              *
+//  E-mail  :  thomas.raddatz@tools400.de                              *
+//  Homepage:  www.tools400.de                                         *
+//=====================================================================*
+//                                                                     *
+//  This software is free software, you can redistribute it and/or     *
+//  modify it under the terms of the GNU General Public License (GPL)  *
+//  as published by the Free Software Foundation.                      *
+//                                                                     *
+//  See GNU General Public License for details.                        *
+//          http://www.opensource.org                                  *
+//          http://www.opensource.org/licenses/gpl-license.html        *
+//                                                                     *
+//=====================================================================*
+//  History:                                                           *
+//                                                                     *
+//  Datum       Name           nderung                                 *
+//  ----------  ------------  ---------------------------------------  *
+//  26.09.2002  Th.Raddatz    Added DEFINE statements to the           *
+//                            reference fields to prevent compiler     *
+//                            error message RNF3316                    *
+//  26.09.2002  Th.Raddatz    Changed how the API error message is     *
+//                            is assigned to o_msg in routine          *
+//                            f_opnSplFLst() to ensure proper value.   *
+//  03.06.2003  Th.Raddatz    Changed service program to use a pointer *
+//                            instead of a data structure as the       *
+//                            handle.                                  *
+//                            Added reference field for handle.        *
+//  30.06.2003  Th.Raddatz    Removed improper const keyword from      *
+//                            prototypes: QUSCRTUS, QUSDLTUS,          *
+//                                        QUSPTRUS, QUSLSPL.           *
+//  30.06.2003  Th.Raddatz    Changed definition of errCode parameter  *
+//                            to use reference field.                  *
+//  26.02.2019  Th.Raddatz    Converted to /free.                      *
+//                                                                     *
+//=====================================================================*
+//   >>PRE-COMPILER<<                                                  *
+//     >>CRTCMD<<  CRTRPGMOD    MODULE(&LI/&OB) +                      *
+//                              SRCFILE(&SL/&SF) SRCMBR(&SM);          *
+//     >>IMPORTANT<<                                                   *
+//       >>PARM<< TRUNCNBR(*NO);                                       *
+//       >>PARM<< DBGVIEW(*LIST);                                      *
+//       >>PARM<< OPTION(*EVENTF);                                     *
+//       >>PARM<< TGTRLS(V7R3M0);                                      *
+//     >>END-IMPORTANT<<                                               *
+//     >>EXECUTE<<                                                     *
+//   >>END-PRE-COMPILER<<                                              *
+//=====================================================================*
+ctl-opt nomain;
+ctl-opt option(*srcstmt: *nodebugio);
+ctl-opt extbinint(*yes) bnddir('QC2LE');
+ctl-opt datfmt(*iso) timfmt(*iso) debug(*yes);
+/copy qlstsplf,copyright
 
-      /copy qlstsplf,quslspl                      List Spooled Files (QUSLSPL) API
-      /copy qlstsplf,qusrspla                     Retrieve Spooled File Attributes (QUSRSPLA) API
-      /copy qlstsplf,fdboolean                    Boolean constants
-      /copy qlstsplf,fdqobj                       Qualified object name structure
-      /copy qlstsplf,fdmsg                        Message structure
-      /copy qlstsplf,fderrcode                    API error code
-      /copy qlstsplf,genlsthdr                    Generic list API header
+/copy qlstsplf,quslspl List Spooled files(QUSLSPL) API
+/copy qlstsplf,qusrspla Retrieve Spooled File attributes(QUSRSPLA) API
+/copy qlstsplf,fdboolean Boolean constants
+/copy qlstsplf,fdqobj qualified object name structure
+/copy qlstsplf,fdmsg Message structure
+/copy qlstsplf,fderrcode API error code
+/copy qlstsplf,genlsthdr Generic list API header
 
-      /copy qlstsplf,plstsplf                     List Spooled Files - Public Interface
-      /copy qlstsplf,puslutils                    Utility for IBM QUSL* List APIs
+/copy qlstsplf,plstsplf List Spooled Files - Public Interface
+/copy qlstsplf,puslutils Utility for IBM QUSL* List APIs
 
-      // List handle
-     D handle_t        DS                  qualified based(pDummy)
-     D  pUsrSpc                        *
-     D  entryIndex                   10I 0
-     D  qUsrSpc                            likeds(qObj_t)
-     D  hRes_01                      16A
+// List handle
+dcl-ds handle_t qualified template;
+  pUsrSpc    pointer;
+  entryIndex int(10);
+  qUsrSpc    likeds(qObj_t);
+  hRes_01    char(16);
+end-ds;
 
-      // Internal prototypes
-     D f_sortLst...
-     D                 PR              N
-     D  i_pUsrSpc                      *   value
-     D  i_compare                    10A   value
+// Internal prototypes
+dcl-pr f_sortLst ind;
+  i_pUsrSpc pointer value;
+  i_compare char(10) value;
+end-pr;
 
-     D f_sortLstByUsrDta...
-     D                 PR            10I 0
-     D  i_pKey                         *   value
-     D  i_pElement                     *   value
+dcl-pr f_sortLstByUsrDta int(10);
+  i_pKey     pointer value;
+  i_pElement pointer value;
+end-pr;
 
-     D f_sortLstByUserName...
-     D                 PR            10I 0
-     D  i_pKey                         *   value
-     D  i_pElement                     *   value
+dcl-pr f_sortLstByUserName int(10);
+  i_pKey     pointer value;
+  i_pElement pointer value;
+end-pr;
 
-     D f_sortLstByPagesAsc...
-     D                 PR            10I 0
-     D  i_pKey                         *   value
-     D  i_pElement                     *   value
+dcl-pr f_sortLstByPagesAsc int(10);
+  i_pKey     pointer value;
+  i_pElement pointer value;
+end-pr;
 
-     D f_sortLstByPagesDsc...
-     D                 PR            10I 0
-     D  i_pKey                         *   value
-     D  i_pElement                     *   value
+dcl-pr f_sortLstByPagesDsc int(10);
+  i_pKey     pointer value;
+  i_pElement pointer value;
+end-pr;
 
-       // Get String Information (CEEGSI) API
-     D ceegsi          PR                  extproc('CEEGSI')
-     D  i_posN                       10I 0 const
-     D  o_dataType                   10I 0
-     D  o_currLen                    10I 0
-     D  o_maxLen                     10I 0
-     D  o_fc                         12A          options(*omit)
+// Get String Information (CEEGSI) API
+dcl-pr ceegsi extproc('CEEGSI');
+  i_posN     int(10) const;
+  o_dataType int(10);
+  o_currLen  int(10);
+  o_maxLen   int(10);
+  o_fc       char(12) options(*omit);
+end-pr;
 
-     D ceegsi_parmInf_t...
-     D                 DS                  qualified based(pDummy)
-     D  type                         10I 0
-     D  currLen                      10I 0
-     D  maxLen                       10I 0
-     D  fc                           12A
+dcl-ds ceegsi_parmInf_t qualified template;
+  type    int(10);
+  currLen int(10);
+  maxLen  int(10);
+  fc      char(12);
+end-ds;
 
-      // qsort -- Sort Array
-     D qsort           PR                  extproc('qsort')
-     D  i_pBase                        *   value
-     D  i_num                        10I 0 value
-     D  i_width                      10I 0 value
-     D  i_pCompare                     *   value procptr
+// qsort -- Sort Array
+dcl-pr qsort extproc('qsort');
+  i_pBase    pointer value;
+  i_num      int(10) value;
+  i_width    int(10) value;
+  i_pCompare pointer(*proc) value;
+end-pr;
 
-       //==================================================================*
-       //  Open List of Spooled Files
-       // -----------------------------------------------------------------
-       //  Using format:  SPLF0100
-       // -----------------------------------------------------------------
-       //  Return value:
-       //  TRUE       - Success
-       //  FALSE      - Error
-       //
-       //  Parameters:
-       //  i_user     - username, *ALL, *CURRENT
-       //  i_outQ     - output queue, *ALL (i_outQLib must be *BLANKS)
-       //  i_outQLib  - output queue library, *CURLIB, *LIBL
-       //  i_formType - form type, *ALL, *STD
-       //  i_usrDta   - user data, *ALL
-       //  i_orderBy  - Sort sequence:
-       //               *NONE           no sorting
-       //               *USRDTA         sort by user data
-       //               *USERNAME       sort by user
-       //               *PAGES_ASC      sort by page count (ascending)
-       //               *PAGES_DSC      sort by page count (descending)
-       //  o_handle   - list handle
-       //  o_msg      - error message
-       //==================================================================*
-     P f_opnSplFLst...
-     P                 B                   export
-     D                 PI              N   opdesc
-     D  i_user                       10A   value
-     D  i_outQ                       10A   value
-     D  i_outQLib                    10A   value
-     D  i_formType                   10A   value
-     D  i_usrDta                     10A   value
-     D  i_orderBy                    10A   value
-     D  o_handle                                  like(lstSplF_handle_t)
-     D  o_msg                     32767A          options(*nopass: *varsize)
+//==================================================================*
+//  Open List of Spooled Files
+// -----------------------------------------------------------------
+//  Using format:  SPLF0100
+// -----------------------------------------------------------------
+//  Return value:
+//  TRUE       - Success
+//  FALSE      - Error
 
-     D isSuccess       S               N   inz(FALSE)
+//  Parameters:
+//  i_user     - username, *ALL, *CURRENT
+//  i_outQ     - output queue, *ALL (i_outQLib must be *BLANKS)
+//  i_outQLib  - output queue library, *CURLIB, *LIBL
+//  i_formType - form type, *ALL, *STD
+//  i_usrDta   - user data, *ALL
+//  i_orderBy  - Sort sequence:
+//               *NONE           no sorting
+//               *USRDTA         sort by user data
+//               *USERNAME       sort by user
+//               *PAGES_ASC      sort by page count (ascending)
+//               *PAGES_DSC      sort by page count (descending)
+//  o_handle   - list handle
+//  o_msg      - error message
+//==================================================================*
+dcl-proc f_opnSplFLst export;
+  dcl-pi *n ind opdesc;
+    i_user     char(10) value;
+    i_outQ     char(10) value;
+    i_outQLib  char(10) value;
+    i_formType char(10) value;
+    i_usrDta   char(10) value;
+    i_orderBy  char(10) value;
+    o_handle   like(lstSplF_handle_t);
+    o_msg      char(32767) options(*nopass: *varsize);
+  end-pi;
 
-     D msg             DS                  likeds(msg_t)
+  dcl-s isSuccess ind inz(FALSE);
 
-     D isUsrSpc        S               N   inz
-     D qUsrSpc         DS                  likeds(qObj_t) inz
-     D text            S             50A   inz
-     D pUsrSpc         S               *   inz
-     D qOutQ           DS                  likeds(qObj_t) inz
-     D errCode         DS                  likeds(errCode_t) inz
+  dcl-ds msg likeds(msg_t);
 
-     D handle          DS                  likeds(handle_t) based(pHandle)
+  dcl-s isUsrSpc ind inz;
+  dcl-ds qUsrSpc likeds(qObj_t) inz;
+  dcl-s text char(50) inz;
+  dcl-s pUsrSpc pointer inz;
+  dcl-ds qOutQ likeds(qObj_t) inz;
+  dcl-ds errCode likeds(errCode_t) inz;
 
-     D msgInf          DS                  likeds(ceegsi_parmInf_t)
-      /free
+  dcl-ds handle likeds(handle_t) based(pHandle);
 
-       clear msg;
+  dcl-ds msgInf likeds(ceegsi_parmInf_t);
 
-       if (Utils_getTmpName(qUsrSpc));
-          text = 'List Spooled Files, SPLF0100, ' + i_orderBy;
-          if (Utils_crtUsrSpc(qUsrSpc: text: errCode));
-             isUsrSpc = TRUE;
+  clear msg;
 
-             qOutQ.name = i_outQ;
-             qOutQ.lib = i_outQLib;
-             errCode = Utils_newApiErrCode(TRUE);
+  if (Utils_getTmpName(qUsrSpc));
+    text = 'List Spooled Files, SPLF0100, ' + i_orderBy;
+    if (Utils_crtUsrSpc(qUsrSpc: text: errCode));
+      isUsrSpc = TRUE;
 
-             QUSLSPL(qUsrSpc: 'SPLF0100'
-                     : i_user: qOutQ: i_formType: i_usrDta: errCode);
+      qOutQ.name = i_outQ;
+      qOutQ.lib = i_outQLib;
+      errCode = Utils_newApiErrCode(TRUE);
 
-             if (not Utils_isApiError(errCode));
-                pUsrSpc = Utils_getPtrUsrSpc(qUsrSpc: errCode);
-                if (pUsrSpc <> *null);
-                   isSuccess = f_sortLst(pUsrSpc: i_orderBy);
-                else;
-                   isSuccess = FALSE;
-                endif;
-             else;
-                isSuccess = FALSE;
-             endif;
+      QUSLSPL(qUsrSpc: 'SPLF0100'
+              : i_user: qOutQ: i_formType: i_usrDta: errCode);
 
-          else;
-             isSuccess = FALSE;
-             isUsrSpc = FALSE;
-          endif;
-
-       else;
+      if (not Utils_isApiError(errCode));
+        pUsrSpc = Utils_getPtrUsrSpc(qUsrSpc: errCode);
+        if (pUsrSpc <> *null);
+          isSuccess = f_sortLst(pUsrSpc: i_orderBy);
+        else;
           isSuccess = FALSE;
-          isUsrSpc = FALSE;
-
-          Clear errCode;
-          errCode.bytPrv = %size(errCode);
-          errCode.bytAvl = %size(errCode);
-          errCode.excID  = 'CPF9898';
-          errCode.excDta = 'Temporary object name could not be created.';
-       endif;
-
-       msg = Utils_cvtApiErrCodeToMsg(errCode);
-
-       if (isSuccess);
-          pHandle = %alloc(%size(handle));
-          handle.pUsrSpc = pUsrSpc;
-          handle.entryIndex = 0;
-          handle.qUsrSpc = qUsrSpc;
-          handle.hRes_01 = '';
-       else;
-          if (isUsrSpc);
-             Utils_dltUsrSpc(qUsrSpc);
-          endif;
-          pHandle = *null;
-       endif;
-
-       o_handle = pHandle;
-
-       if (%parms >= %parmnum(o_msg));
-          ceegsi(%parmnum(o_msg)
-                 : msgInf.type: msgInf.currLen: msgInf.maxLen: *omit);
-          %subst(o_msg: 1: msgInf.currLen) = msg;
-       endif;
-
-       return isSuccess;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Close List Spooled Files
-       // -----------------------------------------------------------------
-       //  Return value:
-       //  TRUE       - Success
-       //  FALSE      - Error
-       //
-       //  Parameters:
-       //  io_handle  - List handle
-       //==================================================================*
-     P f_cloSplFLst...
-     P                 B                   export
-     D                 PI              N
-     D  io_handle                                 like(lstSplF_handle_t)
-
-     D isSuccess       S               N   inz(FALSE)
-
-     D handle          DS                  likeds(handle_t) based(io_handle)
-      /free
-
-       isSuccess = Utils_dltUsrSpc(handle.qUsrSpc);
-
-       handle.pUsrSpc = *null;
-       handle.entryIndex = 0;
-       handle.qUsrSpc = '';
-       handle.hRes_01 = '';
-
-       dealloc(N) io_handle;
-
-       return isSuccess;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Get First Spooled File
-       // -----------------------------------------------------------------
-       //  Return value:
-       //  TRUE       - Success
-       //  FALSE      - Error
-       //
-       //  Parameters:
-       //  i_handle   - list handle
-       //  o_data     - list entry data of type SPLF0100
-       //==================================================================*
-     P f_getFirstSplF...
-     P                 B                   export
-     D                 PI              N          opdesc
-     D  i_handle                           value  like(lstSplF_handle_t)
-     D  o_data                    32767A          options(*varsize)
-
-     D isSuccess       S               N   inz(FALSE)
-
-     D handle          DS                  likeds(handle_t) based(i_handle)
-
-     D dataInf         DS                  likeds(ceegsi_parmInf_t)
-      /free
-
-       ceegsi(%parmnum(o_data)
-              : dataInf.type: dataInf.currLen: dataInf.maxLen: *omit);
-
-       handle.entryIndex = 0;
-
-       isSuccess =
-          Utils_getListEntry(
-             handle.pUsrSpc: handle.entryIndex: dataInf.currLen: o_data);
-
-       if (isSuccess);
-          handle.entryIndex = handle.entryIndex + 1;
-       endif;
-
-       return isSuccess;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Get Next Spooled File
-       // -----------------------------------------------------------------
-       //  Return value:
-       //  TRUE       - Success
-       //  FALSE      - Error
-       //
-       //  Parameters:
-       //  i_handle   - list handle
-       //  o_data     - list entry data of type SPLF0100
-       //==================================================================*
-     P f_getNextSplF...
-     P                 B                   export
-     D                 PI              N          opdesc
-     D  i_handle                           value  like(lstSplF_handle_t)
-     D  o_data                    32767A          options(*varsize)
-
-     D isSuccess       S               N   inz(FALSE)
-
-     D handle          DS                  likeds(handle_t) based(i_handle)
-
-     D dataInf         DS                  likeds(ceegsi_parmInf_t)
-      /free
-
-       ceegsi(%parmnum(o_data)
-              : dataInf.type: dataInf.currLen: dataInf.maxLen: *omit);
-
-       isSuccess =
-          Utils_getListEntry(
-             handle.pUsrSpc: handle.entryIndex: dataInf.currLen: o_data);
-
-       if (isSuccess);
-          handle.entryIndex = handle.entryIndex + 1;
-       endif;
-
-       return isSuccess;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Get number of spooled files available
-       // -----------------------------------------------------------------
-       //  Return value:
-       //  numEntries - Number of available spooled files
-       //
-       //  Parameters:
-       //  i_handle   - list handle
-       //==================================================================*
-     P f_getNumSplFAvl...
-     P                 B                   export
-     D                 PI            10I 0
-     D  i_handle                           value  like(lstSplF_handle_t)
-
-     D handle          DS                  likeds(handle_t) based(i_handle)
-     D genLstHdr       DS                  likeds(genLstHdr_t)
-     D                                     based(handle.pUsrSpc)
-      /free
-
-       return genLstHdr.numE;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Retrieve Spooled File Attributes
-       // -----------------------------------------------------------------
-       //  Return value:
-       //  spla0100    - Format SPLA0100 of
-       //                Retrieve Spooled File Attributes (QUSRSPLA) API
-       //
-       //  Parameters:
-       //  i_intJobID  - Internal job identifier
-       //  i_intSplFID - Internal spooled file identifier
-       //  o_msg       - error message
-       //==================================================================*
-     P f_rtvSplFA...
-     P                 B                   export
-     D                 PI                  opdesc like(spla0100_t)
-     D  i_intJobID                   16A   const
-     D  i_intSplFID                  16A   const
-     D  o_msg                     32767A         options(*nopass: *varsize)
-
-     D spla0100        DS                  likeds(spla0100_t) inz
-
-     D msg             DS                  likeds(msg_t) inz
-     D errCode         DS                  likeds(errCode_t) inz
-
-     D msgInf          DS                  likeds(ceegsi_parmInf_t)
-      /free
-
-       if (%parms >= %parmnum(o_msg));
-          errCode = Utils_newApiErrCode(TRUE);
-       else;
-          errCode = Utils_newApiErrCode(FALSE);
-       endif;
-
-       clear SPLA0100;
-       QUSRSPLA(SPLA0100: %size(SPLA0100): 'SPLA0100': '*INT'
-                : i_intJobID: i_intSplFID: '*INT': 0: errCode);
-
-       msg = Utils_cvtApiErrCodeToMsg(errCode);
-
-       if (%parms >= %parmnum(o_msg));
-          ceegsi(%parmnum(o_msg)
-                 : msgInf.type: msgInf.currLen: msgInf.maxLen : *omit);
-          %subst(o_msg: 1: msgInf.currLen) = msg;
-       endif;
-
-       return spla0100;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Sort User Space
-       //==================================================================*
-     P f_sortLst...
-     P                 B
-     D                 PI              N
-     D  i_pUsrSpc                      *   value
-     D  i_compare                    10A   value
-
-     D isSuccess       S               N   inz(FALSE)
-
-     D genLstHdr       DS                  likeds(genLstHdr_t)
-     D                                     based(i_pUsrSpc)
-     D pCompFunc       S               *   inz procptr
-      /free
-
-       // Set compare function ...
-       select;
-          // ... sorting not requested
-       when (i_compare = '*NONE');
-          pCompFunc = *null;
-          isSuccess = TRUE;
-          // ... sort by user data
-       when (i_compare = '*USRDTA');
-          pCompFunc = %paddr('F_SORTLSTBYUSRDTA');
-          isSuccess = TRUE;
-          // ... sort by user name
-       when (i_compare = '*USERNAME');
-          pCompFunc = %paddr('F_SORTLSTBYUSERNAME');
-          isSuccess = TRUE;
-          // ... sort by page count (ascending)
-       when (i_compare = '*PAGES_ASC');
-          pCompFunc = %paddr('F_SORTLSTBYPAGESASC');
-          isSuccess = TRUE;
-          // ... sort by page count (descending)
-       when (i_compare = '*PAGES_DSC');
-          pCompFunc = %paddr('F_SORTLSTBYPAGESDSC');
-          isSuccess = TRUE;
-          // ... unknown compare function
-       other;
-          pCompFunc = *null;
-          isSuccess = FALSE;
-       endsl;
-
-       if (pCompFunc <> *null);
-          qsort(i_pUsrSpc + genLstHdr.ofsLstSct
-                : genLstHdr.numE: genLstHdr.sizeE: pCompFunc);
-       endif;
-
-       return isSuccess;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Sort List by User Data
-       //==================================================================*
-     P f_sortLstByUsrDta...
-     P                 B
-     D                 PI            10I 0
-     D  i_pKey                         *   value
-     D  i_pElement                     *   value
-
-     D key             DS                  likeds(splf0100_t) based(i_pKey)
-     D element         DS                  likeds(splf0100_t) based(i_pElement)
-
-     D rc              S             10I 0 inz
-      /free
-
-       select;
-       when (key.userData < element.userData);
-          rc = -1;
-       when (key.userData > element.userData);
-          rc =  1;
-       other;
-          rc =  0;
-       endsl;
-
-       return rc;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Sort List by User Name
-       //==================================================================*
-     P f_sortLstByUserName...
-     P                 B
-     D                 PI            10I 0
-     D  i_pKey                         *   value
-     D  i_pElement                     *   value
-
-     D key             DS                  likeds(splf0100_t) based(i_pKey)
-     D element         DS                  likeds(splf0100_t) based(i_pElement)
-
-     D rc              S             10I 0 inz
-      /free
-
-       select;
-       when (key.user < element.user);
-          rc = -1;
-       when (key.user > element.user);
-          rc =  1;
-       other;
-          rc =  0;
-       endsl;
-
-       return rc;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Sort list by page count (ASCENDING)
-       //==================================================================*
-     P f_sortLstByPagesAsc...
-     P                 B
-     D                 PI            10I 0
-     D  i_pKey                         *   value
-     D  i_pElement                     *   value
-
-     D key             DS                  likeds(splf0100_t) based(i_pKey)
-     D element         DS                  likeds(splf0100_t) based(i_pElement)
-
-     D rc              S             10I 0 inz
-
-     D spla0100_k      DS                  likeds(spla0100_t) inz
-     D spla0100_e      DS                  likeds(spla0100_t) inz
-     D msg             DS                  likeds(msg_t) inz
-      /free
-
-       spla0100_k = f_rtvSplFA(key.intJobID: key.intSplFID: msg);
-       if (msg.ID <> '');
-          spla0100_k.pages = *HIVAL;
-       endif;
-
-       spla0100_e = f_rtvSplFA(element.intJobID: element.intSplFID: msg);
-       if (msg.ID <> '');
-          spla0100_k.pages = *HIVAL;
-       endif;
-
-       select;
-       when (spla0100_k.pages < spla0100_e.pages);
-          rc = -1;
-       when (spla0100_k.pages > spla0100_e.pages);
-          rc =  1;
-       other;
-          rc =  0;
-       endsl;
-
-       return rc;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Sort list by page count (DESCENDING)
-       //==================================================================*
-     P f_sortLstByPagesDsc...
-     P                 B
-     D                 PI            10I 0
-     D  i_pKey                         *   value
-     D  i_pElement                     *   value
-      /free
-
-       return f_sortLstByPagesAsc(i_pKey: i_pElement) * -1;
-
-      /end-free
-     P                 E
+        endif;
+      else;
+        isSuccess = FALSE;
+      endif;
+
+    else;
+      isSuccess = FALSE;
+      isUsrSpc = FALSE;
+    endif;
+
+  else;
+    isSuccess = FALSE;
+    isUsrSpc = FALSE;
+
+    Clear errCode;
+    errCode.bytPrv = %size(errCode);
+    errCode.bytAvl = %size(errCode);
+    errCode.excID  = 'CPF9898';
+    errCode.excDta = 'Temporary object name could not be created.';
+  endif;
+
+  msg = Utils_cvtApiErrCodeToMsg(errCode);
+
+  if (isSuccess);
+    pHandle = %alloc(%size(handle));
+    handle.pUsrSpc = pUsrSpc;
+    handle.entryIndex = 0;
+    handle.qUsrSpc = qUsrSpc;
+    handle.hRes_01 = '';
+  else;
+    if (isUsrSpc);
+      Utils_dltUsrSpc(qUsrSpc);
+    endif;
+    pHandle = *null;
+  endif;
+
+  o_handle = pHandle;
+
+  if (%parms >= %parmnum(o_msg));
+    ceegsi(%parmnum(o_msg)
+           : msgInf.type: msgInf.currLen: msgInf.maxLen: *omit);
+    %subst(o_msg: 1: msgInf.currLen) = msg;
+  endif;
+
+  return isSuccess;
+
+end-proc;
+
+//==================================================================*
+//  Close List Spooled Files
+// -----------------------------------------------------------------
+//  Return value:
+//  TRUE       - Success
+//  FALSE      - Error
+
+//  Parameters:
+//  io_handle  - List handle
+//==================================================================*
+dcl-proc f_cloSplFLst export;
+  dcl-pi *n ind;
+    io_handle like(lstSplF_handle_t);
+  end-pi;
+
+  dcl-s isSuccess ind inz(FALSE);
+
+  dcl-ds handle likeds(handle_t) based(io_handle);
+
+  isSuccess = Utils_dltUsrSpc(handle.qUsrSpc);
+
+  handle.pUsrSpc = *null;
+  handle.entryIndex = 0;
+  handle.qUsrSpc = '';
+  handle.hRes_01 = '';
+
+  dealloc(N) io_handle;
+
+  return isSuccess;
+
+end-proc;
+
+//==================================================================*
+//  Get First Spooled File
+// -----------------------------------------------------------------
+//  Return value:
+//  TRUE       - Success
+//  FALSE      - Error
+
+//  Parameters:
+//  i_handle   - list handle
+//  o_data     - list entry data of type SPLF0100
+//==================================================================*
+dcl-proc f_getFirstSplF export;
+  dcl-pi *n ind opdesc;
+    i_handle like(lstSplF_handle_t) value;
+    o_data   char(32767) options(*varsize);
+  end-pi;
+
+  dcl-s isSuccess ind inz(FALSE);
+
+  dcl-ds handle likeds(handle_t) based(i_handle);
+
+  dcl-ds dataInf likeds(ceegsi_parmInf_t);
+
+  ceegsi(%parmnum(o_data)
+         : dataInf.type: dataInf.currLen: dataInf.maxLen: *omit);
+
+  handle.entryIndex = 0;
+
+  isSuccess =
+     Utils_getListEntry(
+        handle.pUsrSpc: handle.entryIndex: dataInf.currLen: o_data);
+
+  if (isSuccess);
+    handle.entryIndex = handle.entryIndex + 1;
+  endif;
+
+  return isSuccess;
+
+end-proc;
+
+//==================================================================*
+//  Get Next Spooled File
+// -----------------------------------------------------------------
+//  Return value:
+//  TRUE       - Success
+//  FALSE      - Error
+
+//  Parameters:
+//  i_handle   - list handle
+//  o_data     - list entry data of type SPLF0100
+//==================================================================*
+dcl-proc f_getNextSplF export;
+  dcl-pi *n ind opdesc;
+    i_handle like(lstSplF_handle_t) value;
+    o_data   char(32767) options(*varsize);
+  end-pi;
+
+  dcl-s isSuccess ind inz(FALSE);
+
+  dcl-ds handle likeds(handle_t) based(i_handle);
+
+  dcl-ds dataInf likeds(ceegsi_parmInf_t);
+
+  ceegsi(%parmnum(o_data)
+         : dataInf.type: dataInf.currLen: dataInf.maxLen: *omit);
+
+  isSuccess =
+     Utils_getListEntry(
+        handle.pUsrSpc: handle.entryIndex: dataInf.currLen: o_data);
+
+  if (isSuccess);
+    handle.entryIndex = handle.entryIndex + 1;
+  endif;
+
+  return isSuccess;
+
+end-proc;
+
+//==================================================================*
+//  Get number of spooled files available
+// -----------------------------------------------------------------
+//  Return value:
+//  numEntries - Number of available spooled files
+
+//  Parameters:
+//  i_handle   - list handle
+//==================================================================*
+dcl-proc f_getNumSplFAvl export;
+  dcl-pi *n int(10);
+    i_handle like(lstSplF_handle_t) value;
+  end-pi;
+
+  dcl-ds handle likeds(handle_t) based(i_handle);
+  dcl-ds genLstHdr likeds(genLstHdr_t) based(handle.pUsrSpc);
+
+  return genLstHdr.numE;
+
+end-proc;
+
+//==================================================================*
+//  Retrieve Spooled File Attributes
+// -----------------------------------------------------------------
+//  Return value:
+//  spla0100    - Format SPLA0100 of
+//                Retrieve Spooled File Attributes (QUSRSPLA) API
+
+//  Parameters:
+//  i_intJobID  - Internal job identifier
+//  i_intSplFID - Internal spooled file identifier
+//  o_msg       - error message
+//==================================================================*
+dcl-proc f_rtvSplFA export;
+  dcl-pi *n opdesc like(spla0100_t);
+    i_intJobID  char(16) const;
+    i_intSplFID char(16) const;
+    o_msg       char(32767) options(*nopass: *varsize);
+  end-pi;
+
+  dcl-ds spla0100 likeds(spla0100_t) inz;
+
+  dcl-ds msg likeds(msg_t) inz;
+  dcl-ds errCode likeds(errCode_t) inz;
+
+  dcl-ds msgInf likeds(ceegsi_parmInf_t);
+
+  if (%parms >= %parmnum(o_msg));
+    errCode = Utils_newApiErrCode(TRUE);
+  else;
+    errCode = Utils_newApiErrCode(FALSE);
+  endif;
+
+  clear SPLA0100;
+  QUSRSPLA(SPLA0100: %size(SPLA0100): 'SPLA0100': '*INT'
+           : i_intJobID: i_intSplFID: '*INT': 0: errCode);
+
+  msg = Utils_cvtApiErrCodeToMsg(errCode);
+
+  if (%parms >= %parmnum(o_msg));
+    ceegsi(%parmnum(o_msg)
+           : msgInf.type: msgInf.currLen: msgInf.maxLen : *omit);
+    %subst(o_msg: 1: msgInf.currLen) = msg;
+  endif;
+
+  return spla0100;
+
+end-proc;
+
+//==================================================================*
+//  Sort User Space
+//==================================================================*
+dcl-proc f_sortLst;
+  dcl-pi *n ind;
+    i_pUsrSpc pointer value;
+    i_compare char(10) value;
+  end-pi;
+
+  dcl-s isSuccess ind inz(FALSE);
+
+  dcl-ds genLstHdr likeds(genLstHdr_t) based(i_pUsrSpc);
+  dcl-s pCompFunc pointer(*proc) inz;
+
+  // Set compare function ...
+  select;
+  // ... sorting not requested
+  when (i_compare = '*NONE');
+    pCompFunc = *null;
+    isSuccess = TRUE;
+  // ... sort by user data
+  when (i_compare = '*USRDTA');
+    pCompFunc = %paddr('F_SORTLSTBYUSRDTA');
+    isSuccess = TRUE;
+  // ... sort by user name
+  when (i_compare = '*USERNAME');
+    pCompFunc = %paddr('F_SORTLSTBYUSERNAME');
+    isSuccess = TRUE;
+  // ... sort by page count (ascending)
+  when (i_compare = '*PAGES_ASC');
+    pCompFunc = %paddr('F_SORTLSTBYPAGESASC');
+    isSuccess = TRUE;
+  // ... sort by page count (descending)
+  when (i_compare = '*PAGES_DSC');
+    pCompFunc = %paddr('F_SORTLSTBYPAGESDSC');
+    isSuccess = TRUE;
+  // ... unknown compare function
+  other;
+    pCompFunc = *null;
+    isSuccess = FALSE;
+  endsl;
+
+  if (pCompFunc <> *null);
+    qsort(i_pUsrSpc + genLstHdr.ofsLstSct
+          : genLstHdr.numE: genLstHdr.sizeE: pCompFunc);
+  endif;
+
+  return isSuccess;
+
+end-proc;
+
+//==================================================================*
+//  Sort List by User Data
+//==================================================================*
+dcl-proc f_sortLstByUsrDta;
+  dcl-pi *n int(10);
+    i_pKey     pointer value;
+    i_pElement pointer value;
+  end-pi;
+
+  dcl-ds key likeds(splf0100_t) based(i_pKey);
+  dcl-ds element likeds(splf0100_t) based(i_pElement);
+
+  dcl-s rc int(10) inz;
+
+  select;
+  when (key.userData < element.userData);
+    rc = -1;
+  when (key.userData > element.userData);
+    rc =  1;
+  other;
+    rc =  0;
+  endsl;
+
+  return rc;
+
+end-proc;
+
+//==================================================================*
+//  Sort List by User Name
+//==================================================================*
+dcl-proc f_sortLstByUserName;
+  dcl-pi *n int(10);
+    i_pKey     pointer value;
+    i_pElement pointer value;
+  end-pi;
+
+  dcl-ds key likeds(splf0100_t) based(i_pKey);
+  dcl-ds element likeds(splf0100_t) based(i_pElement);
+
+  dcl-s rc int(10) inz;
+
+  select;
+  when (key.user < element.user);
+    rc = -1;
+  when (key.user > element.user);
+    rc =  1;
+  other;
+    rc =  0;
+  endsl;
+
+  return rc;
+
+end-proc;
+
+//==================================================================*
+//  Sort list by page count (ASCENDING)
+//==================================================================*
+dcl-proc f_sortLstByPagesAsc;
+  dcl-pi *n int(10);
+    i_pKey     pointer value;
+    i_pElement pointer value;
+  end-pi;
+
+  dcl-ds key likeds(splf0100_t) based(i_pKey);
+  dcl-ds element likeds(splf0100_t) based(i_pElement);
+
+  dcl-s rc int(10) inz;
+
+  dcl-ds spla0100_k likeds(spla0100_t) inz;
+  dcl-ds spla0100_e likeds(spla0100_t) inz;
+  dcl-ds msg likeds(msg_t) inz;
+
+  spla0100_k = f_rtvSplFA(key.intJobID: key.intSplFID: msg);
+  if (msg.ID <> '');
+    spla0100_k.pages = *HIVAL;
+  endif;
+
+  spla0100_e = f_rtvSplFA(element.intJobID: element.intSplFID: msg);
+  if (msg.ID <> '');
+    spla0100_k.pages = *HIVAL;
+  endif;
+
+  select;
+  when (spla0100_k.pages < spla0100_e.pages);
+    rc = -1;
+  when (spla0100_k.pages > spla0100_e.pages);
+    rc =  1;
+  other;
+    rc =  0;
+  endsl;
+
+  return rc;
+
+end-proc;
+
+//==================================================================*
+//  Sort list by page count (DESCENDING)
+//==================================================================*
+dcl-proc f_sortLstByPagesDsc;
+  dcl-pi *n int(10);
+    i_pKey     pointer value;
+    i_pElement pointer value;
+  end-pi;
+
+  return f_sortLstByPagesAsc(i_pKey: i_pElement) * -1;
+
+end-proc;
 
 ]]>  </copysrc>
 </mbr>
@@ -2541,100 +2527,82 @@ mbrtext =  "List Spooled Files - Public Interface             "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-      *=====================================================================*
-      *  Author  :  Thomas Raddatz                                          *
-      *  Date    :  16.09.2002                                              *
-      *  E-mail  :  thomas.raddatz@tools400.de                              *
-      *  Homepage:  www.tools400.de                                         *
-      *=====================================================================*
-      *
-      /copy qlstsplf,qusrspla                     List Spooled Files (QUSLSPL) API
-      *
-      *===============================================================*
-      *  Reference fields
-      *===============================================================*
-     D lstSplF_handle_t...
-     D                 S               *   based(pDummy)
-      *
-      *==================================================================*
-      *  Open List Of Spooled Files
-      *==================================================================*
-      *
-     D f_opnSplFLst...
-     D                 PR              N   opdesc
-     D                                     extproc('LSTSPLF+
-     D                                     _f_opnSplFLst+
-     D                                     ')
-     D  i_user                       10A   value
-     D  i_outQ                       10A   value
-     D  i_outQLib                    10A   value
-     D  i_formType                   10A   value
-     D  i_userData                   10A   value
-     D  i_orderBy                    10A   value
-     D  o_handle                                  like(lstSplF_handle_t)
-     D  o_msg                     32767A          options(*nopass: *varsize)
-      *
-      *==================================================================*
-      *  Close List Of Spooled Files
-      *==================================================================*
-      *
-     D f_cloSplFLst...
-     D                 PR              N
-     D                                     extproc('LSTSPLF+
-     D                                     _f_cloSplFLst+
-     D                                     ')
-     D  io_handle                                 like(lstSplF_handle_t)
-      *
-      *==================================================================*
-      *  Get First Spooled File
-      *==================================================================*
-      *
-     D f_getFirstSplF...
-     D                 PR              N   opdesc
-     D                                     extproc('LSTSPLF+
-     D                                     _f_getFirstSplF+
-     D                                     ')
-     D  i_handle                           value  like(lstSplF_handle_t)
-     D  o_data                    32767A   options(*varsize)
-      *
-      *==================================================================*
-      *  Get Next Spooled File
-      *==================================================================*
-      *
-     D f_getNextSplF...
-     D                 PR              N   opdesc
-     D                                     extproc('LSTSPLF+
-     D                                     _f_getNextSplF+
-     D                                     ')
-     D  i_handle                           value  like(lstSplF_handle_t)
-     D  o_data                    32767A   options(*varsize)
-      *
-      *==================================================================*
-      *  Get Number of Spooled Files available
-      *==================================================================*
-      *
-     D f_getNumSplFAvl...
-     D                 PR            10I 0
-     D                                     extproc('LSTSPLF+
-     D                                     _f_getNumSplFAvl+
-     D                                     ')
-     D  i_handle                           value  like(lstSplF_handle_t)
-      *
-      *==================================================================*
-      *  Retrieve Spooled File Attributes
-      *==================================================================*
-      *
-     D f_rtvSplFA...
-     D                 PR                  opdesc like(spla0100_t)
-     D                                     extproc('LSTSPLF+
-     D                                     _f_rtvSplFA+
-     D                                     ')
-     D  i_intJobID                   16A   const
-     D  i_intSplFID                  16A   const
-     D  o_msg                     32767A         options(*nopass: *varsize)
-      *
+**free
+//=====================================================================*
+//  Author  :  Thomas Raddatz                                          *
+//  Date    :  16.09.2002                                              *
+//  E-mail  :  thomas.raddatz@tools400.de                              *
+//  Homepage:  www.tools400.de                                         *
+//=====================================================================*
+
+/copy qlstsplf,qusrspla List Spooled files(QUSLSPL) API
+
+//===============================================================*
+//  Reference fields
+//===============================================================*
+dcl-s lstSplF_handle_t pointer template;
+
+//==================================================================*
+//  Open List Of Spooled Files
+//==================================================================*
+
+dcl-pr f_opnSplFLst ind opdesc extproc('LSTSPLF_f_opnSplFLst');
+  i_user     char(10) value;
+  i_outQ     char(10) value;
+  i_outQLib  char(10) value;
+  i_formType char(10) value;
+  i_userData char(10) value;
+  i_orderBy  char(10) value;
+  o_handle   like(lstSplF_handle_t);
+  o_msg      char(32767) options(*nopass: *varsize);
+end-pr;
+
+//==================================================================*
+//  Close List Of Spooled Files
+//==================================================================*
+
+dcl-pr f_cloSplFLst ind extproc('LSTSPLF_f_cloSplFLst');
+  io_handle like(lstSplF_handle_t);
+end-pr;
+
+//==================================================================*
+//  Get First Spooled File
+//==================================================================*
+
+dcl-pr f_getFirstSplF ind opdesc extproc('LSTSPLF_f_getFirstSplF');
+  i_handle like(lstSplF_handle_t) value;
+  o_data   char(32767) options(*varsize);
+end-pr;
+
+//==================================================================*
+//  Get Next Spooled File
+//==================================================================*
+
+dcl-pr f_getNextSplF ind opdesc extproc('LSTSPLF_f_getNextSplF');
+  i_handle like(lstSplF_handle_t) value;
+  o_data   char(32767) options(*varsize);
+end-pr;
+
+//==================================================================*
+//  Get Number of Spooled Files available
+//==================================================================*
+
+dcl-pr f_getNumSplFAvl int(10) extproc('LSTSPLF_f_getNumSplFAvl');
+  i_handle like(lstSplF_handle_t) value;
+end-pr;
+
+//==================================================================*
+//  Retrieve Spooled File Attributes
+//==================================================================*
+
+dcl-pr f_rtvSplFA opdesc like(spla0100_t) extproc('LSTSPLF_f_rtvSplFA');
+  i_intJobID  char(16) const;
+  i_intSplFID char(16) const;
+  o_msg       char(32767) options(*nopass: *varsize);
+end-pr;
+
 ]]>  </copysrc>
 </mbr>
 <sendmsg  sendmsgid="CPF9897" sendmsgtype = "*STATUS   "><![CDATA[
@@ -2648,87 +2616,66 @@ mbrtext =  "Utility for IBM QUSL* List APIs                   "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-      /if not defined(PUSLUTILS)
-      /define PUSLUTILS
+**free
+/if not defined(PUSLUTILS)
+/define PUSLUTILS
 
-      /copy qlstsplf,fdqobj                       Qualified object name structure
-      /copy qlstsplf,fdmsg                        Message structure
-      /copy qlstsplf,fderrcode                    API error code
-      /copy qlstsplf,genlsthdr                    Generic list API header
+/copy qlstsplf,fdqobj qualified object name structure
+/copy qlstsplf,fdmsg Message structure
+/copy qlstsplf,fderrcode API error code
+/copy qlstsplf,genlsthdr Generic list API header
 
-     D Utils_crtUsrSpc...
-     D                 PR              N
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_crtUsrSpc')
-     D  i_qUsrSpc                          value  likeds(qObj_t)
-     D  i_text                       50A   value
-     D  o_errCode                                 likeds(errCode_t)
+dcl-pr Utils_crtUsrSpc ind extproc('USLUTILS_Utils_crtUsrSpc');
+  i_qUsrSpc likeds(qObj_t) value;
+  i_text    char(50) value;
+  o_errCode likeds(errCode_t);
+end-pr;
 
-     D Utils_getPtrUsrSpc...
-     D                 PR              *
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_getPtrUsrSpc')
-     D  i_qUsrSpc                          value  likeds(qObj_t)
-     D  o_errCode                                 likeds(errCode_t)
+dcl-pr Utils_getPtrUsrSpc pointer extproc('USLUTILS_Utils_getPtrUsrSpc');
+  i_qUsrSpc likeds(qObj_t) value;
+  o_errCode likeds(errCode_t);
+end-pr;
 
-     D Utils_dltUsrSpc...
-     D                 PR              N
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_dltUsrSpc')
-     D  i_qUsrSpc                          value  likeds(qObj_t)
+dcl-pr Utils_dltUsrSpc ind extproc('USLUTILS_Utils_dltUsrSpc');
+  i_qUsrSpc likeds(qObj_t) value;
+end-pr;
 
-     D Utils_getTmpName...
-     D                 PR              N
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_getTmpName')
-     D  o_qUsrSpc                                 likeds(qObj_t)
+dcl-pr Utils_getTmpName ind extproc('USLUTILS_Utils_getTmpName');
+  o_qUsrSpc likeds(qObj_t);
+end-pr;
 
-     D Utils_getListEntry...
-     D                 PR              N
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_getListEntry')
-     D  i_pUsrSpc                      *   const
-     D  i_index                      10I 0 const
-     D  i_length                     10I 0 const
-     D  o_data                    32767A          options(*varsize)
+dcl-pr Utils_getListEntry ind extproc('USLUTILS_Utils_getListEntry');
+  i_pUsrSpc pointer const;
+  i_index   int(10) const;
+  i_length  int(10) const;
+  o_data    char(32767) options(*varsize);
+end-pr;
 
-     D Utils_isApiError...
-     D                 PR              N
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_isApiError')
-     D  i_errCode                          value  likeds(errCode_t)
+dcl-pr Utils_isApiError ind extproc('USLUTILS_Utils_isApiError');
+  i_errCode likeds(errCode_t) value;
+end-pr;
 
-     D Utils_newApiErrCode...
-     D                 PR                         likeds(errCode_t)
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_newApiErrCode')
-     D  i_monmsg                       N   value
+dcl-pr Utils_newApiErrCode likeds(errCode_t) extproc('USLUTILS_Utils_newApiErrCode');
+  i_monmsg ind value;
+end-pr;
 
-     D Utils_cvtApiErrCodeToMsg...
-     D                 PR                         likeds(msg_t)
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_cvtApiErrCodeToMsg')
-     D  i_errCode                          value  likeds(errCode_t)
+dcl-pr Utils_cvtApiErrCodeToMsg likeds(msg_t) extproc('USLUTILS_Utils_cvtApiErrCodeToMsg');
+  i_errCode likeds(errCode_t) value;
+end-pr;
 
-     D Utils_openPrinter...
-     D                 PR
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_openPrinter')
+dcl-pr Utils_openPrinter extproc('USLUTILS_Utils_openPrinter');
+end-pr;
 
-     D Utils_print...
-     D                 PR
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_print')
-     D  i_text                       80A   const varying options(*nopass)
+dcl-pr Utils_print extproc('USLUTILS_Utils_print');
+  i_text varchar(80) options(*nopass) const;
+end-pr;
 
-     D Utils_closePrinter...
-     D                 PR
-     D                                     extproc('USLUTILS_+
-     D                                     Utils_closePrinter')
+dcl-pr Utils_closePrinter extproc('USLUTILS_Utils_closePrinter');
+end-pr;
 
-      /endif
+/endif
 ]]>  </copysrc>
 </mbr>
 <sendmsg  sendmsgid="CPF9897" sendmsgtype = "*STATUS   "><![CDATA[
@@ -2742,64 +2689,64 @@ mbrtext =  "List Spooled Files (QUSLSPL) API                  "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-      /if not defined(QUSLSPL)
-      /define QUSLSPL
-      *
-      *  List Spooled Files (QUSLSPL) API
-     d QUSLSPL...
-     d                 pr                         extpgm('QUSLSPL')
-     d  i_qUsrSpc                    20a   const
-     d  i_format                      8a   const
-     d  i_user                       10a   const
-     d  i_qOutQ                      20a   const
-     d  i_formType                   10a   const
-     d  i_userData                   10a   const
-     d  io_errCode                65535a          options(*nopass: *varsize)    | optGrp 1
-     d  i_qJob                       26a   const  options(*nopass)              | optGrp 2
-     d  i_keyFldsRtn                 10i 0 const  options(*nopass)              |
-     d                                            dim(32)                       |
-     D  i_numFldsRtn                 10i 0 const  options(*nopass)              |
-      *
-      *  Input Parameter Section
-     d QUSLSPL_inpParm_t...
-     d                 ds                  qualified               based(pDummy)
-     d  qUsrSpc                            likeds(QUSLSPL_qObj_t)
-     d  format                        8a
-     d  user                         10a
-     d  qOutQ                              likeds(QUSLSPL_qObj_t)
-     d  formType                     10a
-     d  userData                     10a
-     d  qJob                               likeds(QUSLSPL_qJob_t)
-     d  numKeyFlds                   10i 0
-     d  flds                         10i 0 dim(32)
-      *
-      *  SPLF0100 List Data Section
-     d splf0100_t...
-     d                 ds                  qualified               based(pDummy)
-     d  user                   1     10a
-     d  outQ                  11     20a
-     d  outQLib               21     30a
-     d  formType              31     40a
-     d  userData              41     50a
-     d  intJobId              51     66a
-     d  intSplFId             67     82a
-     d  reserved_1            83     84a
-     d  auxStgPool            85     88i 0
-      *
-     d QUSLSPL_qObj_t...
-     d                 ds                  qualified               based(pDummy)
-     d  name                   1     10
-     d  lib                   11     20
-      *
-     d QUSLSPL_qJob_t...
-     d                 ds                  qualified               based(pDummy)
-     d  name                         10a
-     d  user                         10a
-     d  nbr                           6a
-      *
-      /endif
+**free
+/if not defined(QUSLSPL)
+/define QUSLSPL
+
+//  List Spooled Files (QUSLSPL) API
+dcl-pr QUSLSPL extpgm('QUSLSPL');
+  i_qUsrSpc    char(20) const;
+  i_format     char(8) const;
+  i_user       char(10) const;
+  i_qOutQ      char(20) const;
+  i_formType   char(10) const;
+  i_userData   char(10) const;
+  io_errCode   char(65535) options(*nopass: *varsize); // optGrp 1
+  i_qJob       char(26) options(*nopass) const; // optGrp 2
+  i_keyFldsRtn int(10) options(*nopass) dim(32) const;
+  i_numFldsRtn int(10) options(*nopass) const;
+end-pr;
+
+//  Input Parameter Section
+dcl-ds QUSLSPL_inpParm_t qualified template;
+  qUsrSpc    likeds(QUSLSPL_qObj_t);
+  format     char(8);
+  user       char(10);
+  qOutQ      likeds(QUSLSPL_qObj_t);
+  formType   char(10);
+  userData   char(10);
+  qJob       likeds(QUSLSPL_qJob_t);
+  numKeyFlds int(10);
+  flds       int(10) dim(32);
+end-ds;
+
+//  SPLF0100 List Data Section
+dcl-ds splf0100_t qualified template;
+  user       char(10);
+  outQ       char(10);
+  outQLib    char(10);
+  formType   char(10);
+  userData   char(10);
+  intJobId   char(16);
+  intSplFId  char(16);
+  reserved_1 char(2);
+  auxStgPool int(10);
+end-ds;
+
+dcl-ds QUSLSPL_qObj_t qualified template;
+  name char(10);
+  lib  char(10);
+end-ds;
+
+dcl-ds QUSLSPL_qJob_t qualified template;
+  name char(10);
+  user char(10);
+  nbr  char(6);
+end-ds;
+
+/endif
 ]]>  </copysrc>
 </mbr>
 <sendmsg  sendmsgid="CPF9897" sendmsgtype = "*STATUS   "><![CDATA[
@@ -2813,167 +2760,168 @@ mbrtext =  "Retrieve Spooled File Attributes (QUSRSPLA) API   "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-      /if not defined(QUSRSPLA)
-      /define QUSRSPLA
-      *
-      *  Retrieve Spooled File Attributes (QUSRSPLA) API
-     d QUSRSPLA...
-     d                 pr                         extpgm('QUSRSPLA')
-     d  i_rcvVar                  65535a          options(*varsize)
-     d  i_lenRcvVar                  10i 0 const
-     d  i_format                      8a   const
-     d  i_qJob                       26a   const
-     d  i_intJobId                   16a   const
-     d  i_intSplFId                  16a   const
-     d  i_splF                       10a   const
-     d  i_splFNbr                    10i 0 const
-     d  io_errCode                65535a          options(*nopass: *varsize)    | optGrp 1
-      *
-      *  SPLA0100 Format
-     d spla0100_t...
-     d                 ds                  qualified               based(pDummy)
-     d  bytRet                 1      4i 0
-     d  bytAvl                 5      8i 0
-     d  intJobId               9     24a
-     d  intSplFId             25     40a
-     d  job                   41     50a
-     d  user                  51     60a
-     d  jobNbr                61     66a
-     d  splF                  67     76a
-     d  splFNbr               77     80i 0
-     d  formType              81     90a
-     d  userData              91    100a
-     d  status               101    110a
-     d  available            111    120a
-     d  hold                 121    130a
-     d  save                 131    140a
-     d  pages                141    144i 0
-     d  currPage             145    148i 0
-     d  startPage            149    152i 0
-     d  endPage              153    156i 0
-     d  lastPagePrint        157    160i 0
-     d  restart              161    164i 0
-     d  copies               165    168i 0
-     d  copiesLeft           169    172i 0
-     d  lpi                  173    176i 0
-     d  cpi                  177    180i 0
-     d  priority             181    182a
-     d  outQNm               183    192a
-     d  outQLib              193    202a
-     d  dateOpened           203    209a
-     d  timeOpened           210    215a
-     d  deviceFileNm         216    225a
-     d  deviveFileLib        226    235a
-     d  pgmOpnFileNm         236    245a
-     d  pgmOpnFileLib        246    255a
-     d  accCode              256    270a
-     d  printText            271    300a
-     d  rcdLen               301    304i 0
-     d  maxRcds              305    308i 0
-     d  devType              309    318a
-     d  printDevType         319    328a
-     d  document             329    340a
-     d  folder               341    404a
-     d  s36ProcName          405    412a
-     d  fidelity             413    422a
-     d  rplUnprtChars        423    423a
-     d  rplChar              424    424a
-     d  pageLength           425    428i 0
-     d  pageWidth            429    432i 0
-     d  numSeparators        433    436i 0
-     d  pageOverflow         437    440i 0
-     d  multyByteChar        441    450a
-     d  dbcsExtChar          451    460a
-     d  dbcsShiftIO          461    470a
-     d  dbcsCharRot          471    480a
-     d  dbcsCPI              481    484i 0
-     d  graphCharSet         485    494a
-     d  codePage             495    504a
-     d  formDefNm            505    514a
-     d  formDefLib           515    524a
-     d  srcDrawer            525    528i 0
-     d  prtFont              529    538a
-     d  s36SplFId            539    544a
-     d  pageRot              545    548i 0
-     d  justification        549    552i 0
-     d  duplex               553    562a
-     d  foldRecords          563    572a
-     d  ctrlChar             573    582a
-     d  alignForms           583    592a
-     d  quality              593    602a
-     d  formFeed             603    612a
-     d  volumes              613    683a
-     d  fileLabelId          684    700a
-     d  exchangeType         701    710a
-     d  charCode             711    720a
-     d  totRcds              721    724i 0
-     d  pagesPerSide         725    728i 0
-     d  fontOvrNm            729    738a
-     d  fontOvrLib           739    748a
-     d  fontOvrDwn           749    756p 5
-     d  fonrOvrAcr           757    764p 5
-     d  backOvrNm            765    774a
-     d  backOvrLib           775    784a
-     d  backOvrDwn           785    792p 5
-     d  backOvrAcr           793    800p 5
-     d  unitMeasure          801    810a
-     d  pageDefNm            811    820a
-     d  pageDefLib           821    830a
-     d  lineSpacing          831    840a
-     d  fontSize             841    848p 5
-     d  fontMgnDwn           849    856p 5
-     d  fontMgnAcr           857    864p 5
-     d  backMgnDwn           865    872p 0
-     d  backMgnAcr           873    880p 5
-     d  lengthOfPage         881    888p 5
-     d  widthOfPage          889    896p 5
-     d  measureMethod        897    906a
-     d  afp                  907    907a
-     d  charsetNm            908    917a
-     d  charsetLib           918    927a
-     d  codePageNm           928    937a
-     d  codePageLib          938    947a
-     d  codeFontNm           948    957a
-     d  codeFontLib          958    967a
-     d  dbcsCdeFntNm         968    977a
-     d  dbcsCdeFntLib        978    987a
-     d  usrDefFile           988    997a
-     d  reduceOutput         998   1008a
-     d  outputBin           1009   1012i 0
-     d  ccsid               1013   1016i 0
-     d  usrDefText          1017   1116a
-     d  systemCreated       1117   1124a
-     d  idCreated           1125   1132a
-     d  userCreated         1133   1142a
-     d  reserved_1          1143   1144a
-     d  offsUsrDefOpt       1145   1148i 0
-     d  numUsrDefOpt        1149   1152i 0
-     d  lenUsrDefOptE       1153   1156i 0
-     d  usrDefData          1157   1411a
-     d  usrDefObjNm         1412   1421a
-     d  usrDefObjLib        1422   1431a
-     d  usrObjType          1432   1441a
-     d  reserved_2          1442   1444a
-     d  charSetPntSze       1445   1452p 5
-     d  codFntPntSze        1453   1460p 5
-     d  dbcsCdFnPnSze       1461   1468p 5
-     d  auxStgPool          1469   1472i 0
-     d  splFSize            1473   1476i 0
-     d  splFSizeMlt         1477   1480i 0
-     d  iNetPPJobId         1481   1484i 0
-     d  splFCrtSecMtd       1485   1485a
-     d  splFCrtAutMtd       1486   1486a
-     d  startPrcDate        1487   1493a
-     d  startPrcTime        1494   1499a
-     d  endPrcDate          1500   1506a
-     d  endPrcTime          1507   1512a
-     d  jobSystem           1513   1520a
-     d  devAuxPool          1521   1530a
-     d  expDate             1531   1537a
-      *
-      /endif
+**free
+/if not defined(QUSRSPLA)
+/define QUSRSPLA
+
+//  Retrieve Spooled File Attributes (QUSRSPLA) API
+dcl-pr QUSRSPLA extpgm('QUSRSPLA');
+  i_rcvVar    char(65535) options(*varsize);
+  i_lenRcvVar int(10) const;
+  i_format    char(8) const;
+  i_qJob      char(26) const;
+  i_intJobId  char(16) const;
+  i_intSplFId char(16) const;
+  i_splF      char(10) const;
+  i_splFNbr   int(10) const;
+  io_errCode  char(65535) options(*nopass: *varsize); // | optGrp 1
+end-pr;
+
+//  SPLA0100 Format
+dcl-ds spla0100_t qualified template;
+  bytRet        int(10);
+  bytAvl        int(10);
+  intJobId      char(16);
+  intSplFId     char(16);
+  job           char(10);
+  user          char(10);
+  jobNbr        char(6);
+  splF          char(10);
+  splFNbr       int(10);
+  formType      char(10);
+  userData      char(10);
+  status        char(10);
+  available     char(10);
+  hold          char(10);
+  save          char(10);
+  pages         int(10);
+  currPage      int(10);
+  startPage     int(10);
+  endPage       int(10);
+  lastPagePrint int(10);
+  restart       int(10);
+  copies        int(10);
+  copiesLeft    int(10);
+  lpi           int(10);
+  cpi           int(10);
+  priority      char(2);
+  outQNm        char(10);
+  outQLib       char(10);
+  dateOpened    char(7);
+  timeOpened    char(6);
+  deviceFileNm  char(10);
+  deviveFileLib char(10);
+  pgmOpnFileNm  char(10);
+  pgmOpnFileLib char(10);
+  accCode       char(15);
+  printText     char(30);
+  rcdLen        int(10);
+  maxRcds       int(10);
+  devType       char(10);
+  printDevType  char(10);
+  document      char(12);
+  folder        char(64);
+  s36ProcName   char(8);
+  fidelity      char(10);
+  rplUnprtChars char(1);
+  rplChar       char(1);
+  pageLength    int(10);
+  pageWidth     int(10);
+  numSeparators int(10);
+  pageOverflow  int(10);
+  multyByteChar char(10);
+  dbcsExtChar   char(10);
+  dbcsShiftIO   char(10);
+  dbcsCharRot   char(10);
+  dbcsCPI       int(10);
+  graphCharSet  char(10);
+  codePage      char(10);
+  formDefNm     char(10);
+  formDefLib    char(10);
+  srcDrawer     int(10);
+  prtFont       char(10);
+  s36SplFId     char(6);
+  pageRot       int(10);
+  justification int(10);
+  duplex        char(10);
+  foldRecords   char(10);
+  ctrlChar      char(10);
+  alignForms    char(10);
+  quality       char(10);
+  formFeed      char(10);
+  volumes       char(71);
+  fileLabelId   char(17);
+  exchangeType  char(10);
+  charCode      char(10);
+  totRcds       int(10);
+  pagesPerSide  int(10);
+  fontOvrNm     char(10);
+  fontOvrLib    char(10);
+  fontOvrDwn    packed(15: 5);
+  fonrOvrAcr    packed(15: 5);
+  backOvrNm     char(10);
+  backOvrLib    char(10);
+  backOvrDwn    packed(15: 5);
+  backOvrAcr    packed(15: 5);
+  unitMeasure   char(10);
+  pageDefNm     char(10);
+  pageDefLib    char(10);
+  lineSpacing   char(10);
+  fontSize      packed(15: 5);
+  fontMgnDwn    packed(15: 5);
+  fontMgnAcr    packed(15: 5);
+  backMgnDwn    packed(15);
+  backMgnAcr    packed(15: 5);
+  lengthOfPage  packed(15: 5);
+  widthOfPage   packed(15: 5);
+  measureMethod char(10);
+  afp           char(1);
+  charsetNm     char(10);
+  charsetLib    char(10);
+  codePageNm    char(10);
+  codePageLib   char(10);
+  codeFontNm    char(10);
+  codeFontLib   char(10);
+  dbcsCdeFntNm  char(10);
+  dbcsCdeFntLib char(10);
+  usrDefFile    char(10);
+  reduceOutput  char(11);
+  outputBin     int(10);
+  ccsid         int(10);
+  usrDefText    char(100);
+  systemCreated char(8);
+  idCreated     char(8);
+  userCreated   char(10);
+  reserved_1    char(2);
+  offsUsrDefOpt int(10);
+  numUsrDefOpt  int(10);
+  lenUsrDefOptE int(10);
+  usrDefData    char(255);
+  usrDefObjNm   char(10);
+  usrDefObjLib  char(10);
+  usrObjType    char(10);
+  reserved_2    char(3);
+  charSetPntSze packed(15: 5);
+  codFntPntSze  packed(15: 5);
+  dbcsCdFnPnSze packed(15: 5);
+  auxStgPool    int(10);
+  splFSize      int(10);
+  splFSizeMlt   int(10);
+  iNetPPJobId   int(10);
+  splFCrtSecMtd char(1);
+  splFCrtAutMtd char(1);
+  startPrcDate  char(7);
+  startPrcTime  char(6);
+  endPrcDate    char(7);
+  endPrcTime    char(6);
+  jobSystem     char(8);
+  devAuxPool    char(10);
+  expDate       char(7);
+end-ds;
+
+/endif
 ]]>  </copysrc>
 </mbr>
 <sendmsg  sendmsgid="CPF9897" sendmsgtype = "*STATUS   "><![CDATA[
@@ -2987,383 +2935,364 @@ mbrtext =  "Utility for IBM QUSL* List APIs                   "
 srcfile =  "QLSTSPLF  "
 srclib  =  "selected  "
 srclen  =  "00112"
-srccssid=  "00273">
+srccssid=  "01141">
 <copysrc><![CDATA[
-       //=====================================================================*
-       //  Author  :  Thomas Raddatz                                          *
-       //  Date    :  16.09.2002                                              *
-       //  E-mail  :  thomas.raddatz@tools400.de                              *
-       //  Homepage:  www.tools400.de                                         *
-       //=====================================================================*
-       //                                                                     *
-       //  This software is free software, you can redistribute it and/or     *
-       //  modify it under the terms of the GNU General Public License (GPL)  *
-       //  as published by the Free Software Foundation.                      *
-       //                                                                     *
-       //  See GNU General Public License for details.                        *
-       //          http://www.opensource.org                                  *
-       //          http://www.opensource.org/licenses/gpl-license.html        *
-       //                                                                     *
-       //=====================================================================*
-       //  History:                                                           *
-       //                                                                     *
-       //  Datum       Name          Änderung                                 *
-       //  ----------  ------------  ---------------------------------------  *
-       //  05.03.2019  Th.Raddatz    Initial version.                         *
-       //                                                                     *
-       //=====================================================================*
-       //   >>PRE-COMPILER<<                                                  *
-       //     >>CRTCMD<<  CRTRPGMOD    MODULE(&LI/&OB) +                      *
-       //                              SRCFILE(&SL/&SF) SRCMBR(&SM);          *
-       //     >>IMPORTANT<<                                                   *
-       //       >>PARM<< TRUNCNBR(*NO);                                       *
-       //       >>PARM<< DBGVIEW(*LIST);                                      *
-       //       >>PARM<< OPTION(*EVENTF);                                     *
-       //       >>PARM<< TGTRLS(V7R1M0);                                      *
-       //     >>END-IMPORTANT<<                                               *
-       //     >>EXECUTE<<                                                     *
-       //   >>END-PRE-COMPILER<<                                              *
-       //=====================================================================*
-     H NOMAIN
-     H OPTION(*SRCSTMT : *NODEBUGIO)
-     H EXTBININT(*YES) BNDDIR('QC2LE')
-     H DATFMT(*ISO) TIMFMT(*ISO) DEBUG(*YES)
-     H COPYRIGHT('V1.0 - 05.03.2019 - mailto: thomas.raddatz@tools400.de')
-
-     FQSYSPRT   O    F   80        printer usropn oflind(*in70)
-
-      /copy qlstsplf,puslutils                    Utility for IBM QUSL* List APIs
-      /copy qlstsplf,fdboolean                    Boolean Constants
-      /copy qlstsplf,fdqobj                       Qualified Object Name
-      /copy qlstsplf,genlsthdr                    Generic list API header
-
-      // tmpnam -- Produce Temporary File Name
-     D tmpnam          PR              *   extproc('tmpnam')
-     D  io_pTmpName                    *   value
-
-     D L_TMPNAM        C                   const(39)                            ! <stdio.h>
-
-      // strtok -- Tokenize String
-     D strtok          PR              *   extproc('strtok')
-     D  i_string                       *   value options(*string)
-     D  i_token                        *   value options(*string)
-
-      // memcpy -- Copy Bytes
-     D memcpy          PR                  extproc('memcpy')
-     D  i_dest                         *   value
-     D  i_src                          *   value
-     D  i_count                      10I 0 value
-
-      // Create User Space (QUSCRTUS) API
-     d QUSCRTUS...
-     d                 pr                  extpgm('QUSCRTUS')
-     d  i_qUsrSpc                    20A   const
-     d  i_extAttr                    10a   const
-     d  i_initSize                   10i 0 const
-     d  i_initValue                   1a   const
-     d  i_pubAuth                    10a   const
-     d  i_text                       50A   const
-     d  i_replace                    10a   const options(*nopass)               | optGrp 1
-     d  io_ErrCode                65535a         options(*nopass: *varsize)     |
-     d  i_domain                     10a   const options(*nopass)               | optGrp 2
-     d  i_tfrSizeReq                 10i 0 const options(*nopass)               | optGrp 3
-     d  i_optSpcAlgn                  1a   const options(*nopass)               | optGrp 3
-
-      // Retrieve Pointer to User Space (QUSPTRUS) API
-     d QUSPTRUS...
-     d                 pr                  extpgm('QUSPTRUS')
-     d  i_qUsrSpc                    20A   const
-     d  o_pUsrSpc                      *
-     d  io_ErrCode                65535a         options(*nopass: *varsize)     | optGrp 1
-
-      // Delete User Space (QUSDLTUS) API
-     d QUSDLTUS...
-     d                 pr                  extpgm('QUSDLTUS')
-     d  i_qUsrSpc                    20A   const
-     d  io_ErrCode                65535a         options(*varsize)
-
-       //==================================================================*
-       //  Creates a user space.
-       //  Returns TRUE on success, else FALSE.
-       //==================================================================*
-     P Utils_crtUsrSpc...
-     P                 B                   export
-     D                 PI              N
-     D  i_qUsrSpc                          value  likeds(qObj_t)
-     D  i_text                       50A   value
-     D  o_errCode                                 likeds(errCode_t )
+**free
+//=====================================================================*
+//  Author  :  Thomas Raddatz                                          *
+//  Date    :  16.09.2002                                              *
+//  E-mail  :  thomas.raddatz@tools400.de                              *
+//  Homepage:  www.tools400.de                                         *
+//=====================================================================*
+//                                                                     *
+//  This software is free software, you can redistribute it and/or     *
+//  modify it under the terms of the GNU General Public License (GPL)  *
+//  as published by the Free Software Foundation.                      *
+//                                                                     *
+//  See GNU General Public License for details.                        *
+//          http://www.opensource.org                                  *
+//          http://www.opensource.org/licenses/gpl-license.html        *
+//                                                                     *
+//=====================================================================*
+//  History:                                                           *
+//                                                                     *
+//  Datum       Name           nderung                                 *
+//  ----------  ------------  ---------------------------------------  *
+//  05.03.2019  Th.Raddatz    Initial version.                         *
+//                                                                     *
+//=====================================================================*
+//   >>PRE-COMPILER<<                                                  *
+//     >>CRTCMD<<  CRTRPGMOD    MODULE(&LI/&OB) +                      *
+//                              SRCFILE(&SL/&SF) SRCMBR(&SM);          *
+//     >>IMPORTANT<<                                                   *
+//       >>PARM<< TRUNCNBR(*NO);                                       *
+//       >>PARM<< DBGVIEW(*LIST);                                      *
+//       >>PARM<< OPTION(*EVENTF);                                     *
+//       >>PARM<< TGTRLS(V7R3M0);                                      *
+//     >>END-IMPORTANT<<                                               *
+//     >>EXECUTE<<                                                     *
+//   >>END-PRE-COMPILER<<                                              *
+//=====================================================================*
+ctl-opt nomain;
+ctl-opt option(*srcstmt: *nodebugio);
+ctl-opt extbinint(*yes) bnddir('QC2LE');
+ctl-opt datfmt(*iso) timfmt(*iso) debug(*yes);
+ctl-opt copyright('V1.0 - 05.03.2019 - mailto: thomas.raddatz@tools400.de');
+
+dcl-f QSYSPRT printer(80) usage(*output) usropn oflind(*in70);
+
+/copy qlstsplf,puslutils Utility for IBM QUSL* List APIs
+/copy qlstsplf,fdboolean Boolean Constants
+/copy qlstsplf,fdqobj qualified object Name
+/copy qlstsplf,genlsthdr Generic list API header
+
+// tmpnam -- Produce Temporary File Name
+dcl-pr tmpnam pointer extproc('tmpnam');
+  io_pTmpName pointer value;
+end-pr;
+
+dcl-c L_TMPNAM 39; // ! <stdio.h>
+
+// strtok -- Tokenize String
+dcl-pr strtok pointer extproc('strtok');
+  i_string pointer options(*string) value;
+  i_token  pointer options(*string) value;
+end-pr;
+
+// memcpy -- Copy Bytes
+dcl-pr memcpy extproc('memcpy');
+  i_dest  pointer value;
+  i_src   pointer value;
+  i_count int(10) value;
+end-pr;
+
+// Create User Space (QUSCRTUS) API
+dcl-pr QUSCRTUS extpgm('QUSCRTUS');
+  i_qUsrSpc    char(20) const;
+  i_extAttr    char(10) const;
+  i_initSize   int(10) const;
+  i_initValue  char(1) const;
+  i_pubAuth    char(10) const;
+  i_text       char(50) const;
+  i_replace    char(10) options(*nopass) const; // | optGrp 1
+  io_ErrCode   char(65535) options(*nopass: *varsize); // |
+  i_domain     char(10) options(*nopass) const; // | optGrp 2
+  i_tfrSizeReq int(10) options(*nopass) const; // | optGrp 3
+  i_optSpcAlgn char(1) options(*nopass) const; // | optGrp 3
+end-pr;
+
+// Retrieve Pointer to User Space (QUSPTRUS) API
+dcl-pr QUSPTRUS extpgm('QUSPTRUS');
+  i_qUsrSpc  char(20) const;
+  o_pUsrSpc  pointer;
+  io_ErrCode char(65535) options(*nopass: *varsize); // | optGrp 1
+end-pr;
+
+// Delete User Space (QUSDLTUS) API
+dcl-pr QUSDLTUS extpgm('QUSDLTUS');
+  i_qUsrSpc  char(20) const;
+  io_ErrCode char(65535) options(*varsize);
+end-pr;
+
+//==================================================================*
+//  Creates a user space.
+//  Returns TRUE on success, else FALSE.
+//==================================================================*
+dcl-proc Utils_crtUsrSpc export;
+  dcl-pi *n ind;
+    i_qUsrSpc likeds(qObj_t) value;
+    i_text    char(50) value;
+    o_errCode likeds(errCode_t);
+  end-pi;
 
-     D isSuccess       S               N   inz(FALSE)
+  dcl-s isSuccess ind inz(FALSE);
 
-     D errCode         DS                  likeds(errCode_t) inz
-      /free
+  dcl-ds errCode likeds(errCode_t) inz;
 
-       errCode = Utils_newApiErrCode(TRUE);
+  errCode = Utils_newApiErrCode(TRUE);
 
-       QUSCRTUS(
-          i_qUsrSpc: 'TEMP': 65536: x'00': '*USE': i_text: '*NO': errCode);
+  QUSCRTUS(
+     i_qUsrSpc: 'TEMP': 65536: x'00': '*USE': i_text: '*NO': errCode);
 
-       isSuccess = not Utils_isApiError(errCode);
-       o_errCode = errCode;
+  isSuccess = not Utils_isApiError(errCode);
+  o_errCode = errCode;
 
-       return isSuccess;
+  return isSuccess;
 
-      /end-free
-     P                 E
+end-proc;
 
-       //==================================================================*
-       //  Creates the pointer of the data of a given user space.
-       //==================================================================*
-     P Utils_getPtrUsrSpc...
-     P                 B                   export
-     D                 PI              *
-     D  i_qUsrSpc                          value  likeds(qObj_t)
-     D  o_errCode                                 likeds(errCode_t)
+//==================================================================*
+//  Creates the pointer of the data of a given user space.
+//==================================================================*
+dcl-proc Utils_getPtrUsrSpc export;
+  dcl-pi *n pointer;
+    i_qUsrSpc likeds(qObj_t) value;
+    o_errCode likeds(errCode_t);
+  end-pi;
 
-     D pUsrSpc         S               *
+  dcl-s pUsrSpc pointer;
 
-     D errCode         DS                  likeds(errCode_t) inz
-      /free
+  dcl-ds errCode likeds(errCode_t) inz;
 
-       errCode = Utils_newApiErrCode(TRUE);
+  errCode = Utils_newApiErrCode(TRUE);
 
-       QUSPTRUS(i_qUsrSpc: pUsrSpc: errCode);
+  QUSPTRUS(i_qUsrSpc: pUsrSpc: errCode);
 
-       if (Utils_isApiError(errCode));
-          pUsrSpc = *null;
-       endif;
+  if (Utils_isApiError(errCode));
+    pUsrSpc = *null;
+  endif;
 
-       o_errCode = errCode;
+  o_errCode = errCode;
 
-       return pUsrSpc;
+  return pUsrSpc;
 
-      /end-free
-     P                 E
+end-proc;
 
-       //==================================================================*
-       //  Deletes a given user space by name.
-       //  Returns TRUE on success, else FALSE.
-       //==================================================================*
-     P Utils_dltUsrSpc...
-     P                 B                   export
-     D                 PI              N
-     D  i_qUsrSpc                          value  likeds(qObj_t)
+//==================================================================*
+//  Deletes a given user space by name.
+//  Returns TRUE on success, else FALSE.
+//==================================================================*
+dcl-proc Utils_dltUsrSpc export;
+  dcl-pi *n ind;
+    i_qUsrSpc likeds(qObj_t) value;
+  end-pi;
 
-     D isSuccess       S               N   inz(FALSE)
+  dcl-s isSuccess ind inz(FALSE);
 
-     D errCode         DS                  likeds(errCode_t) inz
-      /free
+  dcl-ds errCode likeds(errCode_t) inz;
 
-       errCode = Utils_newApiErrCode(TRUE);
+  errCode = Utils_newApiErrCode(TRUE);
 
-       QUSDLTUS(i_qUsrSpc: errCode);
+  QUSDLTUS(i_qUsrSpc: errCode);
 
-       isSuccess = not Utils_isApiError(errCode);
+  isSuccess = not Utils_isApiError(errCode);
 
-       return isSuccess;
+  return isSuccess;
 
-      /end-free
-     P                 E
+end-proc;
 
-       //==================================================================*
-       //  Gets a temporary object name
-       //  Returns TRUE on success, else FALSE.
-       //==================================================================*
-     P Utils_getTmpName...
-     P                 B                   export
-     D                 PI              N
-     D  o_qUsrSpc                                 likeds(qObj_t)
+//==================================================================*
+//  Gets a temporary object name
+//  Returns TRUE on success, else FALSE.
+//==================================================================*
+dcl-proc Utils_getTmpName export;
+  dcl-pi *n ind;
+    o_qUsrSpc likeds(qObj_t);
+  end-pi;
 
-     D isSuccess       S               N   inz(FALSE)
+  dcl-s isSuccess ind inz(FALSE);
 
-     D tmpName         S              1A   dim(L_TMPNAM)
-     D                                     based(pTmpName)
-      /free
+  dcl-s tmpName char(1) dim(L_TMPNAM) based(pTmpName);
 
-       pTmpName = tmpnam(%addr(tmpName));
-       if (pTmpName <> *NULL);
-          o_qUsrSpc.lib  = %str(strtok(pTmpName:'/'));
-          o_qUsrSpc.name = %str(strtok(*NULL   :'/'));
-          isSuccess = TRUE;
-       else;
-          o_qUsrSpc.lib  = '';
-          o_qUsrSpc.name = '';
-          isSuccess = FALSE;
-       endif;
+  pTmpName = tmpnam(%addr(tmpName));
+  if (pTmpName <> *NULL);
+    o_qUsrSpc.lib  = %str(strtok(pTmpName:'/'));
+    o_qUsrSpc.name = %str(strtok(*NULL   :'/'));
+    isSuccess = TRUE;
+  else;
+    o_qUsrSpc.lib  = '';
+    o_qUsrSpc.name = '';
+    isSuccess = FALSE;
+  endif;
 
-       return isSuccess;
+  return isSuccess;
 
-      /end-free
-     P                 E
+end-proc;
 
-       //==================================================================*
-       //  Get Entry
-       //==================================================================*
-     P Utils_getListEntry...
-     P                 B                   export
-     D                 PI              N
-     D  i_pUsrSpc                      *   const
-     D  i_index                      10I 0 const
-     D  i_length                     10I 0 const
-     D  o_data                    32767A          options(*varsize)
-
-     D isSuccess       S               N   inz(FALSE)
-
-     D genLstHdr       DS                  likeds(genLstHdr_t)
-     D                                     based(i_pUsrSpc)
-     D pDest           S               *   inz
-     D pSrc            S               *   inz
-     D count           S             10I 0 inz
-      /free
-
-       if (genLstHdr.numE > 0 and i_index < genLstHdr.numE);
-
-          pDest = %addr(o_data);
-          pSrc  = %addr(genLstHdr) + genLstHdr.ofsLstSct
-                        + (i_index * genLstHdr.sizeE);
-
-          if (i_length < genLstHdr.sizeE);
-             count = i_length;
-          else;
-             count = genLstHdr.sizeE;
-          endif;
-
-          memcpy(pDest: pSrc: count);
-          isSuccess = TRUE;
-       else;
-          isSuccess = FALSE;
-       endif;
-
-       return isSuccess;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Checks a given API error code for an error condition.
-       //  Returns TRUE if the API reported an error, else FALSE.
-       //==================================================================*
-     P Utils_isApiError...
-     P                 B                   export
-     D                 PI              N
-     D  i_errCode                          value  likeds(errCode_t )
-
-     D isError         S               N   inz(FALSE)
-      /free
-
-       if (i_errCode.bytAvl = 0);
-          isError = FALSE;
-       else;
-          isError = TRUE;
-       endif;
-
-       return isError;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Creates an API error code.
-       //==================================================================*
-     P Utils_newApiErrCode...
-     P                 B                   export
-     D                 PI                         likeds(errCode_t )
-     D  i_monmsg                       N   value
-
-     D errCode         DS                  likeds(errCode_t)
-      /free
-
-       Clear errCode;
-
-       if (i_monMsg);
-          errCode.bytPrv = %size(errCode);
-       else;
-          errCode.bytPrv = 0;
-       endif;
-
-       return errCode;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Converts an API error code to the related CPF message.
-       //==================================================================*
-     P Utils_cvtApiErrCodeToMsg...
-     P                 B                   export
-     D                 PI                         likeds(msg_t     )
-     D  i_errCode                          value  likeds(errCode_t )
-
-     D errorMsg        DS                  likeds(msg_t) inz
-      /free
-
-       if (i_errCode.bytAvl = 0);
-          Clear errorMsg;
-       else;
-          Clear errorMsg;
-          errorMsg.ID = i_errCode.excID;
-          errorMsg.data = i_errCode.excDta;
-          errorMsg.type = '*ESCAPE';
-          errorMsg.file = 'QCPFMSG';
-          errorMsg.lib = 'QSYS';
-       endif;
-
-       return errorMsg;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Opens the output log.
-       //==================================================================*
-     P Utils_openPrinter...
-     P                 B                   export
-     D                 PI
-      /free
-
-       if (not %open(QSYSPRT));
-          open QSYSPRT;
-       endif;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Appends a line to the output log.
-       //==================================================================*
-     P Utils_print...
-     P                 B                   export
-     D                 PI
-     D  i_text                       80A   const varying options(*nopass)
-
-     D lineOutput      DS            80    inz
-      /free
-
-       if (%parms() >= %parmnum(i_text));
-          lineOutput = i_text;
-       else;
-          lineOutput = '';
-       endif;
-
-       write QSYSPRT lineOutput;
-
-      /end-free
-     P                 E
-
-       //==================================================================*
-       //  Closes the output log.
-       //==================================================================*
-     P Utils_closePrinter...
-     P                 B                   export
-     D                 PI
-      /free
-
-       if (%open(QSYSPRT));
-          close QSYSPRT;
-       endif;
-
-      /end-free
-     P                 E
+//==================================================================*
+//  Get Entry
+//==================================================================*
+dcl-proc Utils_getListEntry export;
+  dcl-pi *n ind;
+    i_pUsrSpc pointer const;
+    i_index   int(10) const;
+    i_length  int(10) const;
+    o_data    char(32767) options(*varsize);
+  end-pi;
+
+  dcl-s isSuccess ind inz(FALSE);
+
+  dcl-ds genLstHdr likeds(genLstHdr_t) based(i_pUsrSpc);
+  dcl-s pDest pointer inz;
+  dcl-s pSrc pointer inz;
+  dcl-s count int(10) inz;
+
+  if (genLstHdr.numE > 0 and i_index < genLstHdr.numE);
+
+    pDest = %addr(o_data);
+    pSrc  = %addr(genLstHdr) + genLstHdr.ofsLstSct
+                  + (i_index * genLstHdr.sizeE);
+
+    if (i_length < genLstHdr.sizeE);
+      count = i_length;
+    else;
+      count = genLstHdr.sizeE;
+    endif;
+
+    memcpy(pDest: pSrc: count);
+    isSuccess = TRUE;
+  else;
+    isSuccess = FALSE;
+  endif;
+
+  return isSuccess;
+
+end-proc;
+
+//==================================================================*
+//  Checks a given API error code for an error condition.
+//  Returns TRUE if the API reported an error, else FALSE.
+//==================================================================*
+dcl-proc Utils_isApiError export;
+  dcl-pi *n ind;
+    i_errCode likeds(errCode_t) value;
+  end-pi;
+
+  dcl-s isError ind inz(FALSE);
+
+  if (i_errCode.bytAvl = 0);
+    isError = FALSE;
+  else;
+    isError = TRUE;
+  endif;
+
+  return isError;
+
+end-proc;
+
+//==================================================================*
+//  Creates an API error code.
+//==================================================================*
+dcl-proc Utils_newApiErrCode export;
+  dcl-pi *n likeds(errCode_t);
+    i_monmsg ind value;
+  end-pi;
+
+  dcl-ds errCode likeds(errCode_t);
+
+  Clear errCode;
+
+  if (i_monMsg);
+    errCode.bytPrv = %size(errCode);
+  else;
+    errCode.bytPrv = 0;
+  endif;
+
+  return errCode;
+
+end-proc;
+
+//==================================================================*
+//  Converts an API error code to the related CPF message.
+//==================================================================*
+dcl-proc Utils_cvtApiErrCodeToMsg export;
+  dcl-pi *n likeds(msg_t);
+    i_errCode likeds(errCode_t) value;
+  end-pi;
+
+  dcl-ds errorMsg likeds(msg_t) inz;
+
+  if (i_errCode.bytAvl = 0);
+    Clear errorMsg;
+  else;
+    Clear errorMsg;
+    errorMsg.ID = i_errCode.excID;
+    errorMsg.data = i_errCode.excDta;
+    errorMsg.type = '*ESCAPE';
+    errorMsg.file = 'QCPFMSG';
+    errorMsg.lib = 'QSYS';
+  endif;
+
+  return errorMsg;
+
+end-proc;
+
+//==================================================================*
+//  Opens the output log.
+//==================================================================*
+dcl-proc Utils_openPrinter export;
+  dcl-pi *n;
+  end-pi;
+
+  if (not %open(QSYSPRT));
+    open QSYSPRT;
+  endif;
+
+end-proc;
+
+//==================================================================*
+//  Appends a line to the output log.
+//==================================================================*
+dcl-proc Utils_print export;
+  dcl-pi *n;
+    i_text varchar(80) options(*nopass) const;
+  end-pi;
+
+  dcl-ds lineOutput len(80) inz;
+  end-ds;
+
+  if (%parms() >= %parmnum(i_text));
+    lineOutput = i_text;
+  else;
+    lineOutput = '';
+  endif;
+
+  write QSYSPRT lineOutput;
+
+end-proc;
+
+//==================================================================*
+//  Closes the output log.
+//==================================================================*
+dcl-proc Utils_closePrinter export;
+  dcl-pi *n;
+  end-pi;
+
+  if (%open(QSYSPRT));
+    close QSYSPRT;
+  endif;
+
+end-proc;
 
 ]]>  </copysrc>
 </mbr>
@@ -3372,7 +3301,7 @@ CRTBNDCL PGM(&tolib/A_INSTALL) SRCFILE(&tolib/QLSTJOB) SRCMBR(*PGM) DFTACTGRP(*N
 IEW(*LIST)
 ]]>  </qcmdexc>
 <qcmdexc condition="*NONE" release="*CURRENT" dltsplf="*NONE"><![CDATA[
-CALL PGM(&tolib/A_INSTALL) PARM('&TGTRLS' '&SRCFILE' '&tolib' '&CRTTSTPGM')
+CALL PGM(&tolib/A_INSTALL) PARM(('&TGTRLS') ('&SRCFILE') ('&tolib') ('&CRTTSTPGM'))
 ]]>  </qcmdexc>
 <qcmdexc condition="*NONE" release="*CURRENT" dltsplf="*NONE"><![CDATA[
 DLTPGM PGM(&tolib/A_INSTALL)
