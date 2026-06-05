@@ -51,7 +51,7 @@
       appblddate CDATA #REQUIRED
      >
      ]>
-<upload  appname="LSTSPLF"  appauthor="Thomas Raddatz"  appblddate=" 6/03/2026">
+<upload  appname="LSTSPLF"  appauthor="Thomas Raddatz"  appblddate=" 6/05/2026">
 <install_instructions><![CDATA[
      *----------------------------------------------------------------      ------
      *  1. Upload entire XML to your AS/400 to a source file 112 long, into any mbr
@@ -1315,7 +1315,7 @@ srccssid=  "01141">
      /* =================================================================== */
      /*  History:                                                           */
      /*                                                                     */
-     /*  Datum       Name           nderung                                 */
+     /*  Datum       Name          Änderung                                 */
      /*  ----------  ------------  ---------------------------------------  */
      /*                                                                     */
      /* =================================================================== */
@@ -1677,7 +1677,7 @@ srccssid=  "01141">
 //=====================================================================*
 //  History:                                                           *
 //                                                                     *
-//  Datum       Name           nderung                                 *
+//  Datum       Name          Änderung                                 *
 //  ----------  ------------  ---------------------------------------  *
 //  26.09.2002  Th.Raddatz    Added reference field msg_t.             *
 //  26.09.2002  Th.Raddatz    Added msg parameter to the               *
@@ -1950,7 +1950,7 @@ srccssid=  "01141">
 //=====================================================================*
 //  History:                                                           *
 //                                                                     *
-//  Datum       Name           nderung                                 *
+//  Datum       Name          Änderung                                 *
 //  ----------  ------------  ---------------------------------------  *
 //  26.09.2002  Th.Raddatz    Added DEFINE statements to the           *
 //                            reference fields to prevent compiler     *
@@ -2956,7 +2956,7 @@ srccssid=  "01141">
 //=====================================================================*
 //  History:                                                           *
 //                                                                     *
-//  Datum       Name           nderung                                 *
+//  Datum       Name          Änderung                                 *
 //  ----------  ------------  ---------------------------------------  *
 //  05.03.2019  Th.Raddatz    Initial version.                         *
 //                                                                     *

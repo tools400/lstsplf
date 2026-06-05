@@ -17,7 +17,7 @@
 //=====================================================================*
 //  History:                                                           *
 //                                                                     *
-//  Datum       Name          nderung                                 *
+//  Datum       Name          Änderung                                 *
 //  ----------  ------------  ---------------------------------------  *
 //  26.09.2002  Th.Raddatz    Added DEFINE statements to the           *
 //                            reference fields to prevent compiler     *
