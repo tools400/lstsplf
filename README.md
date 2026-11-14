@@ -1,6 +1,6 @@
 # LSTSPLF - A Tools/400 Service Program
 
-LSTSPLF is service program that for retrieving a list of spooled files.
+LSTSPLF is a service program for retrieving a list of spooled files.
 
 ## Dependencies
 
